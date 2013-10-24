@@ -19,18 +19,14 @@ define(["init"], function(){
 			this.player.vy += 100 * delta;
 		}
 		if(this.keys.right){
-			this.player.vx += 9.8 * delta;
-			if(this.player.vx > 10){
-				this.player.vx = 10;
-			}
+			this.player.vx += 100 * delta;
+			
 		}
 		if(this.keys.left){
-			this.player.vx -= 9.8 * delta
-			if(this.player.vx < -30){
-				this.player.vx = -30;
-			}
+			this.player.vx -= 100 * delta
+			
 		}
-		this.player.vx *= Math.pow(.2, delta);
-		this.player.x += this.player.vx + delta;
+		this.player.vx *= Math.pow(.9, delta);
+		this.player.x += this.player.vx * delta;
 	}
 });
