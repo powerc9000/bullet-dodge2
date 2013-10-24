@@ -6,8 +6,7 @@ require(["head-on","update", "render", "keys"],function($h, update, render){
 		x:0,
 		y:0,
 		vy:0,
-		vx:0,
-
+		vx:0
 	});
 	$h.update(update);
 	$h.render(render);
