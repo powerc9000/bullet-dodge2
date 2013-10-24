@@ -26,7 +26,14 @@ define(["init"], function(){
 			this.player.vx -= 100 * delta
 			
 		}
-		this.player.vx *= Math.pow(.9, delta);
+		if(this.player.y >= 500-10){
+			this.player.vx *= Math.pow(.2, delta);
+		}
+		else{
+			this.player.vx *= Math.pow(.9, delta);
+		}
+		
+		this.player.vx = (this.player.vx >= 1 || this.player.vx <= -1) ? this.player.vx : 0;
 		this.player.x += this.player.vx * delta;
 	}
 });
