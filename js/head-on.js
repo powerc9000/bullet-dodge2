@@ -30,9 +30,11 @@ define(function(){
                 _ticks: 0,
 
                 randInt: function(min, max) {
-                    return Math.floor(Math.random() * (max + 1 - min)) + min;
+                    return Math.floor(Math.random() * (max +1 - min)) + min;
                 },
-
+                randFloat: function(min, max) {
+                	return Math.random() * (max - min) + min
+                },
                 events: {
                     events: {},
                     listen: function(eventName, callback){
@@ -189,6 +191,8 @@ define(function(){
                         return new this.canvas(name);
                     }
                     this.canvas = this.canvases[name];
+                    this.width = this.canvas.width;
+                    this.height = this.canvas.height;
                     return this;
                 },
 
@@ -229,16 +233,27 @@ define(function(){
             	}
             	ctx.restore();
             },
-            drawRect: function(width,height,x,y,color, stroke){
-                var ctx = this.canvas.ctx;
+            drawRect: function(width, height, x, y, color, stroke, rotation){
+                var ctx = this.canvas.ctx, mod = 1;
                 ctx.save();
                 ctx.beginPath();
+
+                if(rotation){
+                	ctx.translate(x +width/2,y +height/2);
+                	ctx.rotate(rotation);
+                	ctx.rect(-width/2, -height/2, width,height);
+                }
+                else{
+                	ctx.rect(x,y,width,height);
+                }
                 if(color){
                     ctx.fillStyle = color;
                 }
-                ctx.rect(x,y,width,height);
+                
                 ctx.fill();
-                this.stroke(stroke)
+                if(typeof stroke === "object" && !isEmpty(stroke)){
+                	this.stroke(stroke);
+                }
                 ctx.closePath();
                 ctx.restore();
                 return this;
@@ -299,6 +314,10 @@ define(function(){
         }
 
         return headOn;
+
+        function isEmpty(obj){
+        	return Object.keys(obj).length === 0;
+        }
     }());
     window.headOn = headOn;
 })(window);

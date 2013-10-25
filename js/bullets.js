@@ -11,18 +11,31 @@ define(["head-on", "seekerBullet", "big-boyBullet", "normalBullet"], function($h
 		x:0,
 		y:0,
 		vx:0,
-		vy:0
+		vy:0,
+		width:10,
+		height:10,
+		destroyed:false
 	}
 	return {
 		update: updateBullets,
 		create: createBullets,
 		render: renderBullets,
+		count: function(){return bullets.length}
 	}
 
 	function updateBullets(delta){
-		bullets.forEach(function(b){
+		bullets.forEach(function(b,i){
+			if(b.destroyed){
+				bullets.splice(i,1);
+			}
 			b.update(delta);
-			
+			bullets.some(function(bb, idx){
+				if($h.collides(b, bb) && i !== idx){
+					b.destroy();
+					bb.destroy();
+					return true;
+				}
+			})
 		});
 	}
 	function createBullets(amt, type){
@@ -36,7 +49,7 @@ define(["head-on", "seekerBullet", "big-boyBullet", "normalBullet"], function($h
 	}
 	function renderBullets(canvas){
 		bullets.forEach(function(b){
-			canvas.drawRect(10, 10, b.x, b.y, "black");
+			b.render(canvas);
 		})
 	}
 });

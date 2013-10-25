@@ -6,7 +6,6 @@ define(["init", "bullets"], function(init, bullets){
 		this.player.update(delta);
 		bullets.update(delta);
 		if(this.gameState.spawnBullet){
-			console.log("hi")
 			that = this;
 			bullets.create(1, "normal");
 			this.gameState.spawnBullet = false;
