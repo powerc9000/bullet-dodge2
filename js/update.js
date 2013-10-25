@@ -7,11 +7,17 @@ define(["init", "bullets"], function(init, bullets){
 		bullets.update(delta);
 		if(this.gameState.spawnBullet){
 			that = this;
-			bullets.create(1, "normal");
+			// if(bullets.created() === 0 || bullets.created() % 5){
+			// 	console.log(bullets.created())
+			// 	bullets.create(1, "normal");
+			// }
+			// else{
+				bullets.create(1, "seeker")
+			//}
 			this.gameState.spawnBullet = false;
 			setTimeout(function(){
 				that.gameState.spawnBullet = true;
-			}, 10 * 1000);
+			}, 3 * 1000);
 		}
 	}
 });

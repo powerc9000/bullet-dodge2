@@ -1,7 +1,9 @@
 define(["head-on", "seekerBullet", "big-boyBullet", "normalBullet"], function($h, sb, bb, nb){
+	var ag = arguments;
 	var bullets = [];
 	var cos = Math.cos;
 	var sin = Math.sin;
+	var count = 0;
 	var types = {
 		seeker: sb,
 		bigBoy: bb,
@@ -20,7 +22,8 @@ define(["head-on", "seekerBullet", "big-boyBullet", "normalBullet"], function($h
 		update: updateBullets,
 		create: createBullets,
 		render: renderBullets,
-		count: function(){return bullets.length}
+		count: function(){return bullets.length},
+		created: function(){return count}
 	}
 
 	function updateBullets(delta){
@@ -29,6 +32,9 @@ define(["head-on", "seekerBullet", "big-boyBullet", "normalBullet"], function($h
 				bullets.splice(i,1);
 			}
 			b.update(delta);
+			if($h.collides(b, $h.player) && b.type == "seeker"){
+				bullets.splice(i,1);
+			}
 			bullets.some(function(bb, idx){
 				if($h.collides(b, bb) && i !== idx){
 					b.destroy();
@@ -43,8 +49,9 @@ define(["head-on", "seekerBullet", "big-boyBullet", "normalBullet"], function($h
 		for(var i=0; i<amt; i++){
 			b = $h.entity(types[type], bulletProto);
 			b.init();
+
 			bullets.push(b);
-			
+			count++;
 		}
 	}
 	function renderBullets(canvas){
