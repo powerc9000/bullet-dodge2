@@ -16,7 +16,8 @@ define(["head-on", "seekerBullet", "big-boyBullet", "normalBullet"], function($h
 		vy:0,
 		width:10,
 		height:10,
-		destroyed:false
+		destroyed:false,
+		explode: explodeBullet
 	}
 	return {
 		update: updateBullets,
@@ -32,13 +33,10 @@ define(["head-on", "seekerBullet", "big-boyBullet", "normalBullet"], function($h
 				bullets.splice(i,1);
 			}
 			b.update(delta);
-			if($h.collides(b, $h.player) && b.type == "seeker"){
-				bullets.splice(i,1);
-			}
 			bullets.some(function(bb, idx){
 				if($h.collides(b, bb) && i !== idx){
-					b.destroy();
-					bb.destroy();
+					b.destroy("collide", bb);
+					bb.destroy("collide", b);
 					return true;
 				}
 			})
@@ -58,5 +56,22 @@ define(["head-on", "seekerBullet", "big-boyBullet", "normalBullet"], function($h
 		bullets.forEach(function(b){
 			b.render(canvas);
 		})
+	}
+	function explodeBullet(){
+		var i = 0;
+		var interval;
+		var that = this;
+		this.exploding = true;
+		interval = setInterval(function(){
+			if(i > 50){
+				clearInterval(interval);
+				that.destroy("exploded");
+				return;
+			}
+			else{
+				that.iteration = i;
+			}
+			i++;
+		}, 20)
 	}
 });

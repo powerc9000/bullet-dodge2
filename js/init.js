@@ -1,5 +1,9 @@
 define(["head-on", "player"],function($h, player){
-	$h.canvas.create("main", 1000, 1000);
+	var width = 1000, height = 700;
+	$h.canvas.create("main", width, height);
+	$h.map = {};
+	$h.map.width = width;
+	$h.map.height = height -10 ;
 	$h.canvas("main").append("body");
 	$h.player = $h.entity(player);
 	$h.gameState = {};

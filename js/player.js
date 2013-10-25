@@ -7,9 +7,11 @@ define(["head-on"], function($h){
 		vx:0,
 		width:10,
 		height:10,
-		ax: 100,
-		ay: 100,
-		update: updatePlayer
+		ax: 200,
+		ay: 400,
+		update: updatePlayer,
+		type:"player",
+		hit: bulletCollision
 	}
 	function updatePlayer(delta){
 		this.vy += 30 * delta;
@@ -31,7 +33,7 @@ define(["head-on"], function($h){
 			this.vx -= this.ax * delta;
 		}
 		
-		if(this.y >= 500-10){
+		if(this.y >= $h.map.height - this.height){
 			this.vx *= Math.pow(.2, delta);
 		}
 		else{
@@ -40,21 +42,24 @@ define(["head-on"], function($h){
 		
 		this.x += this.vx * delta;
 
-		if(this.y >= 500 - 10 && this.vy >= 0){
-			this.y = 500 - 10;
+		if(this.y >= $h.map.height - this.height && this.vy >= 0){
+			this.y = $h.map.height - this.height;
 			this.vy = 0;
 		}
 		else if(this.y <= 0){
 			this.y = 0;
 			this.vy = 0;
 		}
-		if(this.x >= 500 -10){
+		if(this.x >= $h.map.width - this.width){
 			this.vx = 0;
-			this.x = 500-10;
+			this.x = $h.map.width - this.width;
 		}
 		else if(this.x <= 0){
 			this.vx = 0;
 			this.x = 0;
 		}
+	}
+	function bulletCollision(bullet){
+
 	}
 });
