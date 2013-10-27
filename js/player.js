@@ -9,9 +9,12 @@ define(["head-on"], function($h){
 		height:10,
 		ax: 200,
 		ay: 400,
+		health:100,
+		maxHealth: 100,
 		update: updatePlayer,
 		type:"player",
-		hit: bulletCollision
+		hit: bulletCollision,
+		render: renderPlayer
 	}
 	function updatePlayer(delta){
 		this.vy += 30 * delta;
@@ -60,6 +63,15 @@ define(["head-on"], function($h){
 		}
 	}
 	function bulletCollision(bullet){
-
+		if(bullet.type === "normal"){
+			this.health -= 10;
+			console.log(this.health);
+		}
+		if(bullet.type === "seeker"){
+			this.health -= 30
+		}
+	}
+	function renderPlayer(canvas){
+		canvas.drawRect(10,10, this.x, this.y, "black");
 	}
 });

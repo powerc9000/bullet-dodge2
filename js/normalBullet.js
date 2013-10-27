@@ -6,27 +6,39 @@ define(["head-on"], function($h){
 		destroy: destroy,
 		render: render,
 		width:20,
-		height:10
+		height:10,
+		prevX:0,
+		prevY:0,
 	}
 
 	function normalUpdate(delta){
+		
 		if(!this.exploding){
+			this.vx += 50 * delta;
+			this.vy += 50 * delta;
 			this.x += this.vx * delta * Math.cos(this.angle);
 			this.y += this.vy * delta * Math.sin(this.angle);
-			if(this.x <= 0 || this.y <= 0){
+
+			if(this.x + this.width <= 0 || this.y +this.height <= 0){
 				this.x = $h.map.width;
-				this.y = 250;
+				this.y = targetPlayer();
+				this.vy = $h.randInt(100, 200);
+				this.vx = $h.randInt(100, 200);
 				this.angle = calcAngle(this);
 			}
 			if(this.y >= $h.map.height - this.height){
 				this.explode();
+			}
+			if($h.collides(this, $h.player)){
+				this.destroy("collide", $h.player);
+				$h.player.hit(this);
 			}
 		}
 		
 	}
 	function init(){
 		this.x = $h.map.width +100;
-		this.y = targetPlayer();
+		this.y = targetPlayer()
 		this.vx = $h.randInt(100, 200);
 		this.vy = $h.randInt(100, 200);
 		this.angle = calcAngle(this);
@@ -34,11 +46,15 @@ define(["head-on"], function($h){
 
 	}
 	function destroy(reason, entity){
+		if(reason === "collide"){
+			
+			
+			this.explode();
+			
+			
+		}
 		if(reason === "exploded"){
 			this.destroyed = true;
-		}
-		else{
-			this.explode();
 		}
 	}
 	function targetPlayer(){

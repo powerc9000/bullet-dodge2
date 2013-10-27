@@ -34,7 +34,8 @@ define(["head-on", "seekerBullet", "big-boyBullet", "normalBullet"], function($h
 			}
 			b.update(delta);
 			bullets.some(function(bb, idx){
-				if($h.collides(b, bb) && i !== idx){
+				if($h.collides(b, bb) && i !== idx && !b.exploding && !bb.exploding){
+
 					b.destroy("collide", bb);
 					bb.destroy("collide", b);
 					return true;

@@ -180,6 +180,7 @@ define(function(){
                 onTick: function(then){
                     var now = Date.now(),
                     modifier = now - then;
+                   	this.trueFps = 1/(modifier/1000);
                     this._ticks+=1;
                     this._update(modifier, this._ticks);
                     this._render(modifier, this._ticks);
@@ -200,12 +201,17 @@ define(function(){
                 run: function(){
                     var that = this;
                     var then = Date.now();
-                    setInterval(function(){ 
-                        if(that.imagesLoaded){
-                            that.onTick(then);
-                        }
-                        then = Date.now();
-                    }, 1000/this.fps);
+
+                    window.requestAnimationFrame(aniframe);
+                    function aniframe(){
+                    	if(that.imagesLoaded){
+                    	    that.onTick(then);
+                    	    then = Date.now();
+
+                    	}
+                    	window.requestAnimationFrame(aniframe);
+                    }
+                    
                 }
         };
         headOn.canvas.create = function(name,width,height){
