@@ -1,4 +1,4 @@
-define(["init", "bullets", "hud"], function(init, bullets, hud){
+define(["init", "bullets", "hud"], function(init, bullets, hud, sat){
 	var that;
 	return update;
 	function update(delta){
@@ -19,5 +19,6 @@ define(["init", "bullets", "hud"], function(init, bullets, hud){
 			}, 2 * 1000);
 		}
 		hud.update();
+		//console.log(sat({x:2, y:2, width:20, height:20, angle:Math.PI/4}, {x:50, y:50, width:20, height:20, angle:Math.PI/2}));
 	}
 });

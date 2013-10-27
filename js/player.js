@@ -5,8 +5,9 @@ define(["head-on"], function($h){
 		y:0,
 		vy:0,
 		vx:0,
-		width:10,
-		height:10,
+		angle:0,
+		width:50,
+		height:50,
 		ax: 200,
 		ay: 400,
 		health:100,
@@ -14,7 +15,7 @@ define(["head-on"], function($h){
 		update: updatePlayer,
 		type:"player",
 		hit: bulletCollision,
-		render: renderPlayer
+		render: renderPlayer,
 	}
 	function updatePlayer(delta){
 		this.vy += 30 * delta;
@@ -65,13 +66,13 @@ define(["head-on"], function($h){
 	function bulletCollision(bullet){
 		if(bullet.type === "normal"){
 			this.health -= 10;
-			console.log(this.health);
 		}
 		if(bullet.type === "seeker"){
 			this.health -= 30
 		}
 	}
 	function renderPlayer(canvas){
-		canvas.drawRect(10,10, this.x, this.y, "black");
+		var color;
+		canvas.drawRect(this.width,this.height, this.x, this.y, "black", false, this.angle);
 	}
 });

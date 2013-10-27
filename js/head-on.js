@@ -103,31 +103,199 @@ define(function(){
                     return o;
                 },
 
-                collides: function(ob1,ob2){
-                 var x1, x2, y1, y2, w1, w2, h1, h2;
-                 x1 = ob1.x;
-                 x2 = ob2.x;
-                 y1 = ob1.y;
-                 y2 = ob2.y;
-                 w1 = ob1.width;
-                 w2 = ob2.width;
-                 h1 = ob1.height;
-                 h2 = ob2.height;
-                 w1 += x1;
-                 w2 += x2;
+                // collides: function(ob1,ob2){
+                //  var x1, x2, y1, y2, w1, w2, h1, h2;
+                //  x1 = ob1.x;
+                //  x2 = ob2.x;
+                //  y1 = ob1.y;
+                //  y2 = ob2.y;
+                //  w1 = ob1.width;
+                //  w2 = ob2.width;
+                //  h1 = ob1.height;
+                //  h2 = ob2.height;
+                //  w1 += x1;
+                //  w2 += x2;
 
-                 if(w2 < x1 || w1 < x2){
-                    return false;
-                 }
+                //  if(w2 < x1 || w1 < x2){
+                //     return false;
+                //  }
 
-                 h1 += y1;
-                 h2 += y2;
+                //  h1 += y1;
+                //  h2 += y2;
 
-                 if(h2 < y1 || h1 < y2){
-                    return false;
-                 }
-                 return true;
+                //  if(h2 < y1 || h1 < y2){
+                //     return false;
+                //  }
+                //  return true;
+                // },
+                collides: function(poly1, poly2) {
+                     var points1 = this.getPoints(poly1),
+                         points2 = this.getPoints(poly2),
+                         i = 0,
+                         l = points1.length,
+                         j, k = points2.length,
+                         normal = {
+                             x: 0,
+                             y: 0
+                         },
+                         length,
+                         min1, min2,
+                         max1, max2,
+                         interval,
+                         MTV = null,
+                         MTV2 = null,
+                         MN = null,
+                         dot,
+                         nextPoint,
+                         currentPoint;
+
+                     //loop through the edges of Polygon 1
+                     for (; i < l; i++) {
+                         nextPoint = points1[(i == l - 1 ? 0 : i + 1)];
+                         currentPoint = points1[i];
+
+                         //generate the normal for the current edge
+                         normal.x = -(nextPoint[1] - currentPoint[1]);
+                         normal.y = (nextPoint[0] - currentPoint[0]);
+
+                         //normalize the vector
+                         length = Math.sqrt(normal.x * normal.x + normal.y * normal.y);
+                         normal.x /= length;
+                         normal.y /= length;
+
+                         //default min max
+                         min1 = min2 = -1;
+                         max1 = max2 = -1;
+
+                         //project all vertices from poly1 onto axis
+                         for (j = 0; j < l; ++j) {
+                             dot = points1[j][0] * normal.x + points1[j][1] * normal.y;
+                             if (dot > max1 || max1 === -1) max1 = dot;
+                             if (dot < min1 || min1 === -1) min1 = dot;
+                         }
+
+                         //project all vertices from poly2 onto axis
+                         for (j = 0; j < k; ++j) {
+                             dot = points2[j][0] * normal.x + points2[j][1] * normal.y;
+                             if (dot > max2 || max2 === -1) max2 = dot;
+                             if (dot < min2 || min2 === -1) min2 = dot;
+                         }
+
+                         //calculate the minimum translation vector should be negative
+                         if (min1 < min2) {
+                             interval = min2 - max1;
+
+                             normal.x = -normal.x;
+                             normal.y = -normal.y;
+                         } else {
+                             interval = min1 - max2;
+                         }
+
+                         //exit early if positive
+                         if (interval >= 0) {
+                             return false;
+                         }
+
+                         if (MTV === null || interval > MTV) {
+                             MTV = interval;
+                             MN = {
+                                 x: normal.x,
+                                 y: normal.y
+                             };
+                         }
+                     }
+
+                     //loop through the edges of Polygon 2
+                     for (i = 0; i < k; i++) {
+                         nextPoint = points2[(i == k - 1 ? 0 : i + 1)];
+                         currentPoint = points2[i];
+
+                         //generate the normal for the current edge
+                         normal.x = -(nextPoint[1] - currentPoint[1]);
+                         normal.y = (nextPoint[0] - currentPoint[0]);
+
+                         //normalize the vector
+                         length = Math.sqrt(normal.x * normal.x + normal.y * normal.y);
+                         normal.x /= length;
+                         normal.y /= length;
+
+                         //default min max
+                         min1 = min2 = -1;
+                         max1 = max2 = -1;
+
+                         //project all vertices from poly1 onto axis
+                         for (j = 0; j < l; ++j) {
+                             dot = points1[j][0] * normal.x + points1[j][1] * normal.y;
+                             if (dot > max1 || max1 === -1) max1 = dot;
+                             if (dot < min1 || min1 === -1) min1 = dot;
+                         }
+
+                         //project all vertices from poly2 onto axis
+                         for (j = 0; j < k; ++j) {
+                             dot = points2[j][0] * normal.x + points2[j][1] * normal.y;
+                             if (dot > max2 || max2 === -1) max2 = dot;
+                             if (dot < min2 || min2 === -1) min2 = dot;
+                         }
+
+                         //calculate the minimum translation vector should be negative
+                         if (min1 < min2) {
+                             interval = min2 - max1;
+
+                             normal.x = -normal.x;
+                             normal.y = -normal.y;
+                         } else {
+                             interval = min1 - max2;
+
+
+                         }
+
+                         //exit early if positive
+                         if (interval >= 0) {
+                             return false;
+                         }
+
+                         if (MTV === null || interval > MTV) MTV = interval;
+                         if (interval > MTV2 || MTV2 === null) {
+                             MTV2 = interval;
+                             MN = {
+                                 x: normal.x,
+                                 y: normal.y
+                             };
+                         }
+                     }
+
+                     return {
+                         overlap: MTV2,
+                         normal: MN
+                     };
+
+                 },
+
+                 getPoints: function (obj){
+	             	var x = obj.x,
+	             		y = obj.y,
+	             		width = obj.width,
+	             		height = obj.height,
+	             		angle = obj.angle,
+	             		that = this,
+	             		points = [];
+
+	            	points[0] = [x,y];
+	             	points[1] = [];
+	             	points[1].push(Math.sin(-angle) * height + x);
+	             	points[1].push(Math.cos(-angle) * height + y);
+	             	points[2] = [];
+	             	points[2].push(Math.cos(angle) * width + points[1][0]);
+	            	points[2].push(Math.sin(angle) * width + points[1][1]);
+	            	points[3] = [];
+	            	points[3].push(Math.cos(angle) * width + x);
+	            	points[3].push(Math.sin(angle) * width + y);
+	            		//console.log(points);
+	            	return points;
+
                 },
+
+                 
 
                 group: function(groupName, entity){
                     if(this.groups[groupName]){
@@ -245,9 +413,11 @@ define(function(){
                 ctx.beginPath();
 
                 if(rotation){
-                	ctx.translate(x +width/2,y +height/2);
+                	ctx.translate(x,y);
                 	ctx.rotate(rotation);
-                	ctx.rect(-width/2, -height/2, width,height);
+                	ctx.rect(0, 0, width,height);
+                	
+                	
                 }
                 else{
                 	ctx.rect(x,y,width,height);
@@ -286,14 +456,14 @@ define(function(){
                 var ctx = this.canvas.ctx;
                 var radians = rotation * Math.PI / 180;
                 ctx.save();
-                ctx.translate(x + (image.width / 2), y + (image.height / 2));
+                ctx.translate(x, y);
                 ctx.rotate(radians);
-                ctx.drawImage(image, -image.width / 2, -image.height / 2);
+                ctx.drawImage(image, 0-image.width, 0-image.height);
                 ctx.restore();
                 return this;
             },
 
-            drawText: function(textString, x, y, fontStyle, color, alignment){
+            drawText: function(textString, x, y, fontStyle, color, alignment, baseline){
                 var ctx = this.canvas.ctx;
                 ctx.save();
 
@@ -305,6 +475,9 @@ define(function(){
                 }
                 if(alignment){
                     ctx.textAlign = alignment;
+                }
+                if(baseline){
+                	ctx.textBaseline = baseline;
                 }
 
                 ctx.fillText(textString,x,y);

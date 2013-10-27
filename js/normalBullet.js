@@ -21,12 +21,12 @@ define(["head-on"], function($h){
 
 			if(this.x + this.width <= 0 || this.y +this.height <= 0){
 				this.x = $h.map.width;
-				this.y = targetPlayer();
+				this.y = 250;
 				this.vy = $h.randInt(100, 200);
 				this.vx = $h.randInt(100, 200);
 				this.angle = calcAngle(this);
 			}
-			if(this.y >= $h.map.height - this.height){
+			if($h.collides(this, {angle:0, y:$h.map.height, x:0, width:$h.map.width, height:5})){
 				this.explode();
 			}
 			if($h.collides(this, $h.player)){
