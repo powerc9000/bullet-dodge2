@@ -86,7 +86,10 @@ define(["head-on"], function($h){
 			health -= 10;
 		}
 		if(bullet.type === "seeker"){
-			health -= 30
+			health -= 30;
+		}
+		if(bullet.type === "bigBoy"){
+			health -=50;
 		}
 	}
 	function renderPlayer(canvas){

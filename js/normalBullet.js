@@ -4,7 +4,6 @@ define(["head-on"], function($h){
 		init: init,
 		type: "normal",
 		destroy: destroy,
-		render: render,
 		width:20,
 		height:10,
 		prevX:0,
@@ -29,7 +28,7 @@ define(["head-on"], function($h){
 			if($h.collides(this, {angle:0, y:$h.map.height, x:0, width:$h.map.width, height:5})){
 				this.explode();
 			}
-			if($h.collides(this, $h.player)){
+			if(this.collides($h.player)){
 				this.destroy("collide", $h.player);
 				$h.player.hit(this);
 			}
@@ -62,14 +61,5 @@ define(["head-on"], function($h){
 	}
 	function calcAngle(b){
 		return Math.atan2($h.player.y - b.y, $h.player.x - b.x)
-	}
-	function render(canvas){
-		if(!this.exploding){
-			canvas.drawImageRotated(this.image, this.angle * 180/Math.PI +180, this.x, this.y);
-		}
-		else{
-			canvas.drawCircle(this.x, this.y, this.iteration , "transparent", {color:"red", width:"2px"})
-		}
-		
 	}
 })

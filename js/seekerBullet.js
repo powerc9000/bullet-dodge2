@@ -3,7 +3,6 @@ define(["head-on"], function($h, ba){
 	return {
 		update: seekerUpdate,
 		init: init,
-		render: render,
 		destroy: destroy,
 		type:"seeker"
 	}
@@ -11,11 +10,11 @@ define(["head-on"], function($h, ba){
 	function seekerUpdate(delta){
 		if(!this.exploding){
 			var angleDelta;
-			angleDelta = Math.atan2($h.player.y - this.y, $h.player.x - this.x) - this.angle;
+			angleDelta = Math.atan2($h.player.y + $h.player.height/2 - this.y, $h.player.x + $h.player.width/2 - this.x) - this.angle;
 			this.angle += angleDelta * .05
 			this.x += this.vx * delta * Math.cos(this.angle);
 			this.y += this.vy * delta * Math.sin(this.angle);
-			if($h.collides(this, $h.player)){
+			if(this.collides($h.player)){
 				this.destroy("collide", $h.player);
 				$h.player.hit(this);
 			}
@@ -27,7 +26,7 @@ define(["head-on"], function($h, ba){
 	}
 	function init(){
 		var that = this;
-		this.angle =  Math.atan2($h.player.y - this.y, $h.player.x - this.x);
+		this.angle =  Math.atan2($h.player.y + $h.player.height/2 - this.y, $h.player.x + $h.player.width/2 - this.x);
 		this.vy = 300;
 		this.vx = 300;
 		this.x = 600;
@@ -39,15 +38,7 @@ define(["head-on"], function($h, ba){
 			that.explode("timeout");
 		}, 10*1000);
 	}
-	function render(canvas){
-		if(!this.exploding){
-			canvas.drawImageRotated(this.image, this.angle *180/Math.PI+180, this.x, this.y);
-		}
-		else{
-			canvas.drawCircle(this.x, this.y, this.iteration , "transparent", {color:"red", width:"2px"})
-		}
-		
-	}
+	
 
 	function destroy(reason, entity){
 		if(reason === "collide" && entity.type === "player"){

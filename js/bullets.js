@@ -17,7 +17,11 @@ define(["head-on", "seekerBullet", "big-boyBullet", "normalBullet"], function($h
 		width:10,
 		height:10,
 		destroyed:false,
-		explode: explodeBullet
+		explode: explodeBullet,
+		collides: collides,
+		bullets: bullets,
+		render: render,
+		calcMidPoint: getMidPoint,
 	}
 	return {
 		update: updateBullets,
@@ -26,7 +30,9 @@ define(["head-on", "seekerBullet", "big-boyBullet", "normalBullet"], function($h
 		count: function(){return bullets.length},
 		created: function(){return count}
 	}
-
+	function collides(obj){
+		return $h.collides(this, obj);
+	}
 	function updateBullets(delta){
 		bullets.forEach(function(b,i){
 			if(b.destroyed){
@@ -34,7 +40,7 @@ define(["head-on", "seekerBullet", "big-boyBullet", "normalBullet"], function($h
 			}
 			b.update(delta);
 			bullets.some(function(bb, idx){
-				if($h.collides(b, bb) && i !== idx && !b.exploding && !bb.exploding){
+				if(b.collides(bb) && i !== idx && !b.exploding && !bb.exploding){
 
 					b.destroy("collide", bb);
 					bb.destroy("collide", b);
@@ -59,12 +65,18 @@ define(["head-on", "seekerBullet", "big-boyBullet", "normalBullet"], function($h
 		})
 	}
 	function explodeBullet(){
+
 		var i = 0;
+		var iterations = this.explosionIterations || 50
 		var interval;
 		var that = this;
+		if(this.exploding){
+			console.log("already sploding");
+			return;
+		}
 		this.exploding = true;
 		interval = setInterval(function(){
-			if(i > 50){
+			if(i > iterations){
 				clearInterval(interval);
 				that.destroy("exploded");
 				return;
@@ -74,5 +86,22 @@ define(["head-on", "seekerBullet", "big-boyBullet", "normalBullet"], function($h
 			}
 			i++;
 		}, 20)
+	}
+	function render(canvas){
+		if(!this.exploding){
+			canvas.drawImageRotated(this.image, this.angle *180/Math.PI+180, this.x, this.y);
+		}
+		else{
+			canvas.drawCircle(this.x, this.y, this.iteration , "transparent", {color:"red", width:"2px"})
+		}
+		
+	}
+	function getMidPoint() {
+	    var cosa = Math.cos(this.angle);
+	    var sina = Math.sin(this.angle);
+	    var wp = this.width/2;
+	    var hp = this.height/2;
+	 	this.midPointx =  ( this.x + wp * cosa - hp * sina );
+	    this.midPointy = ( this.y + wp * sina + hp * cosa );
 	}
 });
