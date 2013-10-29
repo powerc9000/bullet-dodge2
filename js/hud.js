@@ -15,7 +15,7 @@ define(["head-on"], function($h){
 	function render(canvas){
 		canvas.canvas.ctx.clearRect(0,0,canvas.width, canvas.height);
 		canvas.drawRect(healthbar.width, healthbar.height, healthbar.x,healthbar.y, "red");
-		canvas.drawRect(($h.player.health/$h.player.maxHealth)*healthbar.width, healthbar.height, healthbar.x,healthbar.y, "green");
+		canvas.drawRect(($h.player.getHealth()/$h.player.maxHealth())*healthbar.width, healthbar.height, healthbar.x,healthbar.y, "green");
 		
 		if($h._ticks % 50 === 0){
 			trueFps = Math.floor($h.trueFps)
