@@ -7,7 +7,7 @@ define(["head-on", "player"],function($h, player){
 	$h.map.height = height -10 ;
 	$h.canvas("main").append("body");
 	$h.canvas("hud").append("body");
-	$h.player = $h.entity(player());
+	$h.player = $h.entity(player);
 	$h.gameState = {};
 	$h.gameState.spawnBullet = true;
 	return{

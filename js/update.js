@@ -2,9 +2,11 @@ define(["init", "bullets", "hud"], function(init, bullets, hud, sat){
 	var that;
 	return update;
 	function update(delta){
+		that = this;
 		delta = delta/1000;
 		this.player.update(delta);
 		bullets.update(delta);
+		
 		if(this.gameState.spawnBullet){
 			that = this;
 			if(bullets.created() === 0 || bullets.created() % 10){
