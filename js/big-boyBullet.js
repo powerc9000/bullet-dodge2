@@ -7,11 +7,14 @@ define(["head-on"], function($h){
 		destroy: destroy,
 		width: 100,
 		height: 50,
-		explosionIterations:200
+		explosionIterations:200,
+		TTL: 3*1000
 	}
 	function render(canvas){
 		if(!this.exploding){
-			canvas.drawRect(this.width,this.height, this.x, this.y, "blue", false, this.angle);
+		var color = (Math.sin(this.TTL/Math.pow(this.TTL/400, 2))> 0) ? "blue" : "red"
+
+			canvas.drawRect(this.width,this.height, this.x, this.y, color, false, this.angle);
 		}
 		else{
 			canvas.drawCircle(this.midPointx, this.midPointy, this.iteration , "transparent", {color:"red", width:"2px"});
@@ -30,7 +33,7 @@ define(["head-on"], function($h){
 			if(!that.exploding){
 				that.destroy("timeout");
 			}
-		}, 3 * 1000)
+		}, this.TTL)
 	}
 	function destroy(reason, obj){
 		obj = obj || {};
@@ -48,6 +51,7 @@ define(["head-on"], function($h){
 
 	function bigBoyUpdate(delta){
 		var that = this;
+		this.TTL -= delta * 1000;
 		if(!this.exploding){
 			this.x += this.vx * Math.cos(this.angle) * delta;
 			this.y += this.vy * Math.sin(this.angle) * delta;
