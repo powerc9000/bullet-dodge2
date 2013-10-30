@@ -11,19 +11,18 @@ define(["head-on"], function($h){
 	}
 
 	function normalUpdate(delta){
-		
 		if(!this.exploding){
-			this.vx += 50 * delta;
-			this.vy += 50 * delta;
-			this.x += this.vx * delta * Math.cos(this.angle);
-			this.y += this.vy * delta * Math.sin(this.angle);
+			this.vy += 9.8 * delta;
+			this.x += this.vx * delta;
+			this.y += this.vy * delta;
 
 			if(this.x + this.width <= 0 || this.y +this.height <= 0){
+				this.angle = calcAngle(this);
 				this.x = $h.map.width;
 				this.y = 250;
-				this.vy = $h.randInt(100, 200);
-				this.vx = $h.randInt(100, 200);
-				this.angle = calcAngle(this);
+				this.vy = $h.randInt(100, 200) * Math.sin(this.angle);
+				this.vx = $h.randInt(100, 200) * Math.cos(this.angle);
+				
 			}
 			if($h.collides(this, {angle:0, y:$h.map.height, x:0, width:$h.map.width, height:5})){
 				this.explode();
@@ -36,11 +35,13 @@ define(["head-on"], function($h){
 		
 	}
 	function init(){
+		var totalV = $h.randInt(300, 500);
 		this.x = $h.map.width +100;
-		this.y = targetPlayer()
-		this.vx = $h.randInt(100, 200);
-		this.vy = $h.randInt(100, 200);
+		this.y = $h.map.height /2;
 		this.angle = calcAngle(this);
+
+		this.vx = totalV * Math.cos(this.angle);
+		this.vy = totalV * Math.sin(this.angle);
 		this.image = $h.images("normalBullet")
 
 	}
