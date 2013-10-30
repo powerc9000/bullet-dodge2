@@ -39,7 +39,6 @@ define(["head-on"], function($h){
 			this.explode();
 		}
 		else if(reason === "collide" && obj.type === "player"){
-			this.calcMidPoint();
 			this.explode();
 		}
 		if(reason === "exploded"){
@@ -54,6 +53,7 @@ define(["head-on"], function($h){
 			this.y += this.vy * Math.sin(this.angle) * delta;
 			if(this.collides($h.player)){
 				this.playerHit = true;
+				this.calcMidPoint();
 				$h.player.hit(this);
 				this.destroy("collide", $h.player);
 			}

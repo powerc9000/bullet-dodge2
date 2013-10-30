@@ -82,6 +82,7 @@ define(["head-on"], function($h){
 		}
 	}
 	function bulletCollision(bullet){
+		var angle;
 		if(bullet.type === "normal"){
 			health -= 10;
 		}
@@ -90,6 +91,9 @@ define(["head-on"], function($h){
 		}
 		if(bullet.type === "bigBoy"){
 			health -=50;
+			angle = Math.atan2(this.y - bullet.midPointy, this.x - bullet.midPointx);
+			this.vx = 500 * Math.cos(angle);
+			this.vy = 500 * Math.sin(angle);
 		}
 	}
 	function renderPlayer(canvas){
