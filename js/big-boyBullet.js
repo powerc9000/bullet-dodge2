@@ -35,7 +35,7 @@ define(["head-on"], function($h){
 	function destroy(reason, obj){
 		obj = obj || {};
 		if(reason === "timeout"){
-			this.calcMidPoint();
+			
 			this.explode();
 		}
 		else if(reason === "collide" && obj.type === "player"){
@@ -51,9 +51,9 @@ define(["head-on"], function($h){
 		if(!this.exploding){
 			this.x += this.vx * Math.cos(this.angle) * delta;
 			this.y += this.vy * Math.sin(this.angle) * delta;
+			this.calcMidPoint();
 			if(this.collides($h.player)){
 				this.playerHit = true;
-				this.calcMidPoint();
 				$h.player.hit(this);
 				this.destroy("collide", $h.player);
 			}

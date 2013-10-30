@@ -14,6 +14,7 @@ define(["head-on"], function($h, ba){
 			this.angle += angleDelta * .05
 			this.x += this.vx * delta * Math.cos(this.angle);
 			this.y += this.vy * delta * Math.sin(this.angle);
+			this.calcMidPoint();
 			if(this.collides($h.player)){
 				this.destroy("collide", $h.player);
 				$h.player.hit(this);

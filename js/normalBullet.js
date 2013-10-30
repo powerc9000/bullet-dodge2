@@ -15,7 +15,7 @@ define(["head-on"], function($h){
 			this.vy += 9.8 * delta;
 			this.x += this.vx * delta;
 			this.y += this.vy * delta;
-
+			this.calcMidPoint();
 			if(this.x + this.width <= 0 || this.y +this.height <= 0){
 				this.angle = calcAngle(this);
 				this.x = $h.map.width;
