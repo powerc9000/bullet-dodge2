@@ -83,18 +83,24 @@ define(["head-on"], function($h){
 	}
 	function bulletCollision(bullet){
 		var angle;
+		var knockback;
+		angle = Math.atan2(this.y - bullet.y, this.x - bullet.x);
 		if(bullet.type === "normal"){
+			knockback = 150;
 			health -= 10;
 		}
 		if(bullet.type === "seeker"){
+			knockback = 300;
 			health -= 30;
 		}
 		if(bullet.type === "bigBoy"){
 			health -=50;
+			knockback = 500;
 			angle = Math.atan2(this.y - bullet.midPointy, this.x - bullet.midPointx);
-			this.vx = 500 * Math.cos(angle);
-			this.vy = 500 * Math.sin(angle);
+			
 		}
+		this.vx = knockback * Math.cos(angle);
+		this.vy = knockback * Math.sin(angle);
 	}
 	function renderPlayer(canvas){
 		var color;
