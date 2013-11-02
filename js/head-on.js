@@ -18,6 +18,7 @@ define(function(){
 (function(window, undefined){
     "use strict";
     var headOn = (function(){
+    	var vectorProto;
         var headOn = {
 
                 groups: {},
@@ -272,8 +273,8 @@ define(function(){
                  },
 
                  getPoints: function (obj){
-	             	var x = obj.x,
-	             		y = obj.y,
+	             	var x = obj.position.x,
+	             		y = obj.position.y,
 	             		width = obj.width,
 	             		height = obj.height,
 	             		angle = obj.angle,
@@ -353,6 +354,7 @@ define(function(){
                     this._update(modifier, this._ticks);
                     this._render(modifier, this._ticks);
                     this.gameTime += modifier;
+
                 },
 
                 canvas: function(name){
@@ -365,7 +367,10 @@ define(function(){
                     return this;
                 },
 
-
+                Vector: function(x, y){
+                	var vec = this.entity({x:x,y:y}, vectorProto);
+                	return vec;
+                },
                 run: function(){
                     var that = this;
                     var then = Date.now();
@@ -382,6 +387,7 @@ define(function(){
                     
                 }
         };
+
         headOn.canvas.create = function(name,width,height){
             var canvas, ctx;
             canvas = document.createElement("canvas");
@@ -491,6 +497,40 @@ define(function(){
                 return this;
             }
         }
+        vectorProto = {
+        	normalize: function(){
+        		var len = this.length();
+        		return headOn.Vector(this.x/len, this.y/len);
+        	},
+
+        	normalizeInPlace: function(){
+        		var len = this.length();
+        		this.x /= len;
+        		this.y /= len;
+        	},
+
+        	dot: function(vec2){
+        		return vec2.x * this.x + vec2.y * this.y;
+        	},
+
+        	length: function(){
+        		return Math.sqrt(this.x*this.x + this.y*this.y);
+        	},
+
+        	sub: function(vec2){
+        		return headOn.Vector(this.x - vec2.x, this.y - vec2.y);
+        	},
+
+        	add: function(vec2){
+        		return headOn.Vector(this.x + vec2.x, this.y + vec2.y);
+        	},
+
+        	mul: function(scalar){
+        		return headOn.Vector(this.x * scalar, this.y * scalar);
+        	}
+        }
+
+        
 
         return headOn;
 

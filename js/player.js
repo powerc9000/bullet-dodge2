@@ -1,17 +1,15 @@
-define(["head-on"], function($h){
+define(["head-on", "constants"], function($h, constants){
 	
 	var health = 100,
 		maxHealth = 100;
 	return{
-		x:0,
-		y:0,
-		vy:0,
-		vx:0,
+		position: $h.Vector(0,0),
+		v: $h.Vector(0,0),
 		angle:0,
 		width:50,
 		height:50,
-		ax: 200,
-		ay: 400,
+		ax: $h.Vector(200,0),
+		ay: $h.Vector(0, 400),
 		getHealth: getHealth,
 		setHealth: setHealth,
 		getMaxHealth: getMaxHealth,
@@ -36,55 +34,53 @@ define(["head-on"], function($h){
 
 	}
 	function updatePlayer(delta){
-		this.vy += 30 * delta;
-		this.y += this.vy * delta;
+		this.v = this.v.add(constants.gravity.mul(delta));
 		if($h.keys.up){
-			this.vy -= this.ay * delta;
+			this.v = this.v.sub(this.ay.mul(delta));
 		}
 		if($h.keys.down){
-			if(this.vy < 0){
-				this.vy += 1000 * delta;
+			if(this.v.y < 0){
+				this.v = this.v.add($h.Vector(0,1000).mul(delta));
 			}
-			this.vy += this.ay * delta;
+			this.v = this.v.add(this.ay.mul(delta));
 		}
 		
 		if($h.keys.right){
-			this.vx += this.ax * delta;
+			this.v = this.v.add(this.ax.mul(delta));
 		}
 		if($h.keys.left){
-			this.vx -= this.ax * delta;
+			this.v = this.v.sub(this.ax.mul(delta));
 		}
 		
-		if(this.y >= $h.map.height - this.height){
-			this.vx *= Math.pow(.2, delta);
+		if(this.position.y >= $h.map.height - this.height){
+			this.v.x *= Math.pow(.2, delta)
 		}
 		else{
-			this.vx *= Math.pow(.9, delta);
+			this.v.x *= Math.pow(.9, delta);
 		}
-		
-		this.x += this.vx * delta;
+		this.position = this.position.add(this.v.mul(delta));
 
-		if(this.y >= $h.map.height - this.height && this.vy >= 0){
-			this.y = $h.map.height - this.height;
-			this.vy = 0;
+		if(this.position.y >= $h.map.height - this.height && this.v.y >= 0){
+			this.position.y = $h.map.height - this.height;
+			this.v.y = 0;
 		}
-		else if(this.y <= 0){
-			this.y = 0;
-			this.vy = 0;
+		else if(this.position.y <= 0){
+			this.position.y = 0;
+			this.v.y = 0;
 		}
-		if(this.x >= $h.map.width - this.width){
-			this.vx = 0;
-			this.x = $h.map.width - this.width;
+		if(this.position.x >= $h.map.width - this.width){
+			this.v.x = 0;
+			this.position.x = $h.map.width - this.width;
 		}
-		else if(this.x <= 0){
-			this.vx = 0;
-			this.x = 0;
+		else if(this.position.x <= 0){
+			this.v.x = 0;
+			this.position.x = 0;
 		}
 	}
 	function bulletCollision(bullet){
 		var angle;
 		var knockback;
-		angle = Math.atan2(this.y + this.height /2 - bullet.y, this.width/2 - bullet.x);
+		angle = this.position.sub(bullet.position).normalize();
 		if(bullet.type === "normal"){
 			knockback = 150;
 			health -= 10;
@@ -96,15 +92,12 @@ define(["head-on"], function($h){
 		if(bullet.type === "bigBoy"){
 			health -=50;
 			knockback = 500;
-			angle = Math.atan2(this.y + this.height /2 - bullet.midPointy, this.x + this.width/2 - bullet.midPointx);
-			
 		}
-		this.vx = knockback * Math.cos(angle);
-		this.vy = knockback * Math.sin(angle);
+		this.v = angle.mul(knockback);
 	}
 	function renderPlayer(canvas){
 		var color;
-		canvas.drawRect(this.width,this.height, this.x, this.y, "black", false, this.angle);
+		canvas.drawRect(this.width,this.height, this.position.x, this.position.y, "green", false, this.angle);
 	}
 	
 	

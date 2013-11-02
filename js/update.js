@@ -1,4 +1,4 @@
-define(["init", "bullets", "hud"], function(init, bullets, hud, sat){
+define(["bullets", "hud"], function(bullets, hud, sat){
 	var that;
 	return update;
 	function update(delta){
@@ -9,20 +9,20 @@ define(["init", "bullets", "hud"], function(init, bullets, hud, sat){
 		
 		if(this.gameState.spawnBullet){
 			that = this;
-			if(bullets.created() === 0 || bullets.created() % 10){
+			//if(bullets.created() === 0 || bullets.created() % 10){
 				bullets.create(1, "normal");
-			}
+			//}
 
-			else{
-				bullets.create(1, "seeker")
-			}
-			if(bullets.created() % 5 === 0){
-				bullets.create(1, "bigBoy");
-			}
+			// else{
+			// 	bullets.create(1, "seeker")
+			// }
+			// if(bullets.created() % 5 === 0){
+			// 	bullets.create(1, "bigBoy");
+			// }
 			this.gameState.spawnBullet = false;
 			setTimeout(function(){
 				that.gameState.spawnBullet = true;
-			}, 2 * 1000);
+			},1000/2);
 		}
 		hud.update();
 		//console.log(sat({x:2, y:2, width:20, height:20, angle:Math.PI/4}, {x:50, y:50, width:20, height:20, angle:Math.PI/2}));

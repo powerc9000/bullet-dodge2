@@ -71,7 +71,6 @@ define(["head-on", "seekerBullet", "big-boyBullet", "normalBullet"], function($h
 		var interval;
 		var that = this;
 		if(this.exploding){
-			console.log("already sploding");
 			return;
 		}
 		this.exploding = true;
@@ -89,10 +88,10 @@ define(["head-on", "seekerBullet", "big-boyBullet", "normalBullet"], function($h
 	}
 	function render(canvas){
 		if(!this.exploding){
-			canvas.drawImageRotated(this.image, this.angle *180/Math.PI+180, this.x, this.y);
+			canvas.drawImageRotated(this.image, this.angle *180/Math.PI+180, this.position.x, this.position.y);
 		}
 		else{
-			canvas.drawCircle(this.x, this.y, this.iteration , "transparent", {color:"red", width:"2px"})
+			canvas.drawCircle(this.position.x, this.position.y, this.iteration , "transparent", {color:"red", width:"2px"})
 		}
 		
 	}
@@ -101,7 +100,7 @@ define(["head-on", "seekerBullet", "big-boyBullet", "normalBullet"], function($h
 	    var sina = Math.sin(this.angle);
 	    var wp = this.width/2;
 	    var hp = this.height/2;
-	 	this.midPointx =  ( this.x + wp * cosa - hp * sina );
-	    this.midPointy = ( this.y + wp * sina + hp * cosa );
+	 	this.midPointx =  ( this.position.x + wp * cosa - hp * sina );
+	    this.midPointy = ( this.position.y + wp * sina + hp * cosa );
 	}
 });

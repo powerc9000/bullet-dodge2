@@ -1,4 +1,4 @@
-define(["head-on"], function($h){
+define(["head-on", "constants"], function($h, constants){
 	return {
 		update: normalUpdate,
 		init: init,
@@ -8,23 +8,19 @@ define(["head-on"], function($h){
 		height:10,
 		prevX:0,
 		prevY:0,
+		heading: {},
 	}
 
 	function normalUpdate(delta){
 		if(!this.exploding){
-			this.vy += 9.8 * delta;
-			this.x += this.vx * delta;
-			this.y += this.vy * delta;
+			//this.v = this.v.add(constants.gravity.mul(delta));
+			this.position = this.position.add(this.v.mul(delta));
 			this.calcMidPoint();
-			if(this.x + this.width <= 0 || this.y +this.height <= 0){
-				this.angle = calcAngle(this);
-				this.x = $h.map.width;
-				this.y = 250;
-				this.vy = $h.randInt(100, 200) * Math.sin(this.angle);
-				this.vx = $h.randInt(100, 200) * Math.cos(this.angle);
-				
+			if(this.position.x + this.width <= 0 || this.position.y +this.height <= 0){
+					this.destroyed = true;
 			}
-			if($h.collides(this, {angle:0, y:$h.map.height, x:0, width:$h.map.width, height:5})){
+			if($h.collides(this, {angle:0, position: {y:$h.map.height, x:0},width:$h.map.width, height:5})){
+
 				this.explode();
 			}
 			if(this.collides($h.player)){
@@ -36,18 +32,15 @@ define(["head-on"], function($h){
 	}
 	function init(){
 		var totalV = $h.randInt(300, 500);
-		this.x = $h.map.width +100;
-		this.y = $h.map.height /2;
+		this.position = $h.Vector($h.map.width +100, $h.map.height /2);
+		this.heading = $h.player.position.sub(this.position).normalize();
 		this.angle = calcAngle(this);
-
-		this.vx = totalV * Math.cos(this.angle);
-		this.vy = totalV * Math.sin(this.angle);
+		this.v = this.heading.mul(totalV);
 		this.image = $h.images("normalBullet")
 
 	}
 	function destroy(reason, entity){
 		if(reason === "collide"){
-			
 			
 			this.explode();
 			
@@ -61,6 +54,6 @@ define(["head-on"], function($h){
 		return $h.randInt($h.player.y -20, $h.player.y+$h.player.height+20);
 	}
 	function calcAngle(b){
-		return Math.atan2($h.player.y - b.y, $h.player.x - b.x)
+		return Math.atan2(b.heading.y, b.heading.x);
 	}
 })
