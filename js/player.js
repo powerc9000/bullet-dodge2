@@ -1,24 +1,33 @@
-define(["head-on", "constants"], function($h, constants){
+define(["head-on", "constants", "entity", "shield"], function($h, constants, entity, shield){
 	
 	var health = 100,
 		maxHealth = 100;
-	return{
-		position: $h.Vector(0,0),
-		v: $h.Vector(0,0),
-		angle:0,
-		width:50,
-		height:50,
-		ax: $h.Vector(200,0),
-		ay: $h.Vector(0, 400),
-		getHealth: getHealth,
-		setHealth: setHealth,
-		getMaxHealth: getMaxHealth,
-		setMaxHealth: setMaxHealth,
-		update: updatePlayer,
-		type:"player",
-		hit: bulletCollision,
-		render: renderPlayer,
-	}
+		var player = $h.entity({
+			position: $h.Vector(0,0),
+			v: $h.Vector(0,0),
+			angle:0,
+			width:50,
+			height:50,
+			ax: $h.Vector(200,0),
+			ay: $h.Vector(0, 400),
+			getHealth: getHealth,
+			setHealth: setHealth,
+			getMaxHealth: getMaxHealth,
+			setMaxHealth: setMaxHealth,
+			update: updatePlayer,
+			type:"player",
+			hit: bulletCollision,
+			render: renderPlayer,
+			move: move,
+			keepInBounds: keepInBounds,
+			gravity: gravity,
+			shield: shield
+		}, entity);
+
+
+	return player;
+
+
 	function getHealth(){
 		return health
 	}
@@ -34,7 +43,17 @@ define(["head-on", "constants"], function($h, constants){
 
 	}
 	function updatePlayer(delta){
-		this.v = this.v.add(constants.gravity.mul(delta));
+		this.keepInBounds(delta);
+		this.move(delta);
+		
+		this.gravity(delta);
+		this.position = this.position.add(this.v.mul(delta));
+		this.shield.update(delta);
+		
+	}
+
+
+	function move(delta){
 		if($h.keys.up){
 			this.v = this.v.sub(this.ay.mul(delta));
 		}
@@ -51,15 +70,21 @@ define(["head-on", "constants"], function($h, constants){
 		if($h.keys.left){
 			this.v = this.v.sub(this.ax.mul(delta));
 		}
-		
+	}
+
+
+	function gravity(delta){
+		this.v = this.v.add(constants.gravity.mul(delta));
+	}
+
+
+	function keepInBounds(delta){
 		if(this.position.y >= $h.map.height - this.height){
 			this.v.x *= Math.pow(.2, delta)
 		}
 		else{
 			this.v.x *= Math.pow(.9, delta);
 		}
-		this.position = this.position.add(this.v.mul(delta));
-
 		if(this.position.y >= $h.map.height - this.height && this.v.y >= 0){
 			this.position.y = $h.map.height - this.height;
 			this.v.y = 0;
@@ -83,14 +108,14 @@ define(["head-on", "constants"], function($h, constants){
 		angle = this.position.sub(bullet.position).normalize();
 		if(bullet.type === "normal"){
 			knockback = 150;
-			health -= 10;
+			health -= this.shield.damage(10);
 		}
 		if(bullet.type === "seeker"){
 			knockback = 300;
-			health -= 30;
+			health -= this.shield.damage(30);
 		}
 		if(bullet.type === "bigBoy"){
-			health -=50;
+			health -= this.shield.damage(50);
 			knockback = 500;
 		}
 		this.v = angle.mul(knockback);

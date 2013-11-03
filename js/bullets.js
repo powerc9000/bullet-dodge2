@@ -1,4 +1,4 @@
-define(["head-on", "seekerBullet", "big-boyBullet", "normalBullet"], function($h, sb, bb, nb){
+define(["head-on", "seekerBullet", "big-boyBullet", "normalBullet", "entity"], function($h, sb, bb, nb, entity){
 	var ag = arguments;
 	var bullets = [];
 	var cos = Math.cos;
@@ -18,11 +18,11 @@ define(["head-on", "seekerBullet", "big-boyBullet", "normalBullet"], function($h
 		height:10,
 		destroyed:false,
 		explode: explodeBullet,
-		collides: collides,
 		bullets: bullets,
 		render: render,
 		calcMidPoint: getMidPoint,
 	}
+	var bulletProto = $h.entity(bulletProto, entity);
 	return {
 		update: updateBullets,
 		create: createBullets,
@@ -30,9 +30,7 @@ define(["head-on", "seekerBullet", "big-boyBullet", "normalBullet"], function($h
 		count: function(){return bullets.length},
 		created: function(){return count}
 	}
-	function collides(obj){
-		return $h.collides(this, obj);
-	}
+	
 	function updateBullets(delta){
 		bullets.forEach(function(b,i){
 			if(b.destroyed){

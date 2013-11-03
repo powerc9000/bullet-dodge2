@@ -25,6 +25,5 @@ define(["bullets", "hud"], function(bullets, hud, sat){
 			},1000/2);
 		}
 		hud.update();
-		//console.log(sat({x:2, y:2, width:20, height:20, angle:Math.PI/4}, {x:50, y:50, width:20, height:20, angle:Math.PI/2}));
 	}
 });
