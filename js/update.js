@@ -9,16 +9,16 @@ define(["bullets", "hud"], function(bullets, hud, sat){
 		
 		if(this.gameState.spawnBullet){
 			that = this;
-			//if(bullets.created() === 0 || bullets.created() % 10){
+			if(bullets.created() === 0 || bullets.created() % 10){
 				bullets.create(1, "normal");
-			//}
-
+			}
+			
 			// else{
 			// 	bullets.create(1, "seeker")
 			// }
-			// if(bullets.created() % 5 === 0){
-			// 	bullets.create(1, "bigBoy");
-			// }
+			if(bullets.created() % 5 === 0){
+				bullets.create(1, "bigBoy");
+			}
 			this.gameState.spawnBullet = false;
 			setTimeout(function(){
 				that.gameState.spawnBullet = true;

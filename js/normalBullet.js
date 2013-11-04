@@ -17,7 +17,7 @@ define(["head-on", "constants"], function($h, constants){
 			this.position = this.position.add(this.v.mul(delta));
 			this.calcMidPoint();
 			if(this.position.x + this.width <= 0 || this.position.y +this.height <= 0){
-					this.destroyed = true;
+				this.destroyed = true;
 			}
 			if($h.collides(this, {angle:0, position: {y:$h.map.height, x:0},width:$h.map.width, height:5})){
 
@@ -37,7 +37,6 @@ define(["head-on", "constants"], function($h, constants){
 		this.angle = calcAngle(this);
 		this.v = this.heading.mul(totalV);
 		this.image = $h.images("normalBullet")
-
 	}
 	function destroy(reason, entity){
 		if(reason === "collide"){

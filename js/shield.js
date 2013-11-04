@@ -1,7 +1,7 @@
 define(["head-on"], function($h){
 	"use strict";
-	var health = 100;
-	var maxHealth = 100;
+	var health = 50;
+	var maxHealth = 50;
 	return{
 		setHealth: setHealth,
 		getHealth: getHealth,
@@ -44,18 +44,12 @@ define(["head-on"], function($h){
 			health -= dmg;
 			playerDmg =  0;
 		}
-		
-		this.timeout = setTimeout(function(){
-			console.log("done")
-			that.damaged = false;
-		}, this.rechargeTimeout);
-		this.damaged = true;
+		this.lastHit = Date.now();
 		return playerDmg;
 	}
 
 	function update(delta){
-		console.log(this.damaged);
-		if(!this.damaged){
+		if(Date.now() - this.lastHit > this.rechargeTimeout){
 			if(health !== maxHealth){
 				if(health + (this.rechargeRate * delta) > maxHealth){
 					health = maxHealth;

@@ -357,6 +357,17 @@ define(function(){
 
                 },
 
+                timeout: function(cb, time, scope){
+                	setTimeout(function(){
+                		cb.call(scope);
+                	}, time)
+                },
+                
+                interval: function(cb, time, scope){
+                	return setInterval(function(){
+                		cb.call(scope);
+                	}, time);
+                },
                 canvas: function(name){
                     if(this === headOn){
                         return new this.canvas(name);
