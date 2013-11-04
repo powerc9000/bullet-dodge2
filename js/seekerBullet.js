@@ -8,18 +8,21 @@ define(["head-on"], function($h, ba){
 	}
 
 	function seekerUpdate(delta){
+		if(this.TTL <= 0){
+			this.explode();
+		}
 		if(!this.exploding){
 			var angleDelta;
-			angleDelta = Math.atan2($h.player.y + $h.player.height/2 - this.y, $h.player.x + $h.player.width/2 - this.x) - this.angle;
+			angleDelta = Math.atan2($h.player.position.y + $h.player.height/2 - this.position.y, $h.player.position.x + $h.player.width/2 - this.position.x) - this.angle;
 			this.angle += angleDelta * .05
-			this.x += this.vx * delta * Math.cos(this.angle);
-			this.y += this.vy * delta * Math.sin(this.angle);
+			this.position.x += this.speed * delta * Math.cos(this.angle);
+			this.position.y += this.speed * delta * Math.sin(this.angle);
 			this.calcMidPoint();
 			if(this.collides($h.player)){
 				this.destroy("collide", $h.player);
 				$h.player.hit(this);
 			}
-			if(this.y >= $h.map.height - this.height){
+			if($h.collides(this, {angle:0, position: {y:$h.map.height, x:0},width:$h.map.width, height:5})){
 				this.explode();
 			}
 		}
@@ -27,17 +30,15 @@ define(["head-on"], function($h, ba){
 	}
 	function init(){
 		var that = this;
-		this.angle =  Math.atan2($h.player.y + $h.player.height/2 - this.y, $h.player.x + $h.player.width/2 - this.x);
-		this.vy = 300;
-		this.vx = 300;
-		this.x = 600;
-		this.y = 250;
+		this.speed = 400;
+		this.position = $h.Vector($h.map.width, $h.map.height /2 );
+		this.heading = $h.player.position.sub(this.position).normalize();
+		this.v = this.heading.mul(400);
+		this.angle =  Math.atan2(this.heading.y, this.heading.x);
 		this.image = $h.images("seekerBullet");
 		this.width = this.image.width;
 		this.height = this.image.height;
-		setTimeout(function(){
-			that.explode("timeout");
-		}, 10*1000);
+		this.TTL = 10 * 1000;
 	}
 	
 

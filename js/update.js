@@ -12,10 +12,13 @@ define(["bullets", "hud"], function(bullets, hud, sat){
 			if(bullets.created() === 0 || bullets.created() % 10){
 				bullets.create(1, "normal");
 			}
-			
+
 			// else{
 			// 	bullets.create(1, "seeker")
 			// }
+			if(bullets.created() % 10 === 0){
+				bullets.create(1, "seeker")
+			}
 			if(bullets.created() % 5 === 0){
 				bullets.create(1, "bigBoy");
 			}

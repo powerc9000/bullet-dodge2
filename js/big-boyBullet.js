@@ -28,7 +28,6 @@ define(["head-on"], function($h){
 		this.heading = $h.player.position.sub(this.position).normalize();
 		this.angle = Math.atan2(this.heading.y, this.heading.x);
 		this.v = this.heading.mul(this.speed);
-		console.log(this.v, this.heading, this.position);
 	}
 	function destroy(reason, obj){
 		obj = obj || {};
