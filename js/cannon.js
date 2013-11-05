@@ -35,15 +35,15 @@ define(["head-on", "bullets"], function($h, bullets){
 		var that = this;
 		this.barrell = type;
 		this.loading = true;
-		if(type === "seeler"){
+		if(type === "seeker"){
 			this.loadTime = 4000
 		}
 		else{
-			this.loadTime = 3000;
+			this.loadTime = 3000 
 		}
 		setTimeout(function(){
 			that.loaded = true;
-		}, this.loadTime);
+		}, this.loadTime + $h.randInt(0,500));
 	}
 
 	function render(canvas){

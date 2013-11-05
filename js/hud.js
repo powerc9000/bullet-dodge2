@@ -24,7 +24,7 @@ define(["head-on"], function($h){
 			
 		}
 		canvas.drawText(trueFps + " fps", canvas.width-30, 40);
-		canvas.drawText("Health: ("+$h.player.getHealth()+"/"+$h.player.getMaxHealth()+")", healthbar.width/2 + healthbar.x, healthbar.height/2 + healthbar.y, "15px", "white", "center", "middle")
+		canvas.drawText("Health: ("+Math.floor($h.player.getHealth())+"/"+$h.player.getMaxHealth()+")", healthbar.width/2 + healthbar.x, healthbar.height/2 + healthbar.y, "15px", "white", "center", "middle")
 
 		
 	}

@@ -1,8 +1,8 @@
 define(["head-on", "constants", "entity", "shield"], function($h, constants, entity, shield){
 	
 	var health = 100,
-		maxHealth = 100;
-		var player = $h.entity({
+		maxHealth = 100,
+		player = $h.entity({
 			position: $h.Vector(0,0),
 			v: $h.Vector(0,0),
 			angle:0,
@@ -14,7 +14,7 @@ define(["head-on", "constants", "entity", "shield"], function($h, constants, ent
 			setHealth: setHealth,
 			getMaxHealth: getMaxHealth,
 			setMaxHealth: setMaxHealth,
-			//update: updatePlayer,
+			update: updatePlayer,
 			type:"player",
 			hit: bulletCollision,
 			render: renderPlayer,
@@ -23,7 +23,6 @@ define(["head-on", "constants", "entity", "shield"], function($h, constants, ent
 			gravity: gravity,
 			shield: shield
 		}, entity);
-		player.update = updatePlayer;
 	return player;
 
 
@@ -69,6 +68,7 @@ define(["head-on", "constants", "entity", "shield"], function($h, constants, ent
 		if($h.keys.right){
 			this.v = this.v.add(this.ax.mul(delta));
 		}
+
 		if($h.keys.left){
 			this.v = this.v.sub(this.ax.mul(delta));
 		}
@@ -83,26 +83,26 @@ define(["head-on", "constants", "entity", "shield"], function($h, constants, ent
 	function keepInBounds(delta){
 		if(this.position.y >= $h.map.height - this.height){
 			this.v.x *= Math.pow(.2, delta)
-		}
-		else{
+		}else{
 			this.v.x *= Math.pow(.9, delta);
 		}
+
 		if(this.position.y >= $h.map.height - this.height && this.v.y >= 0){
 			this.position.y = $h.map.height - this.height;
 			this.v.y = 0;
-		}
-		else if(this.position.y <= 0){
+		}else if(this.position.y <= 0){
 			this.position.y = 0;
 			this.v.y = 0;
 		}
+
 		if(this.position.x >= $h.map.width - this.width){
 			this.v.x = 0;
 			this.position.x = $h.map.width - this.width;
-		}
-		else if(this.position.x <= 0){
+		}else if(this.position.x <= 0){
 			this.v.x = 0;
 			this.position.x = 0;
 		}
+
 		if(correction = this.collides($h.ship)){
 			if(correction.normal.x){
 				this.v.x = 0;
@@ -135,7 +135,4 @@ define(["head-on", "constants", "entity", "shield"], function($h, constants, ent
 		var color;
 		canvas.drawRect(this.width,this.height, this.position.x, this.position.y, "green", false, this.angle);
 	}
-	
-	
-	
 });

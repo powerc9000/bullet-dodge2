@@ -15,7 +15,12 @@ define(["head-on"], function($h){
 	}
 
 	function setHealth(amt){
-
+		if(amt > maxHealth){
+			health = maxhealth;
+		}
+		else{
+			health = amt;
+		}
 	}
 
 	function getHealth(){
@@ -23,7 +28,8 @@ define(["head-on"], function($h){
 	}
 
 	function setMaxHealth(amt){
-
+		maxHealth = amt;
+		health = amt * (health/maxhealth);
 	}
 
 	function getMaxHealth(){
@@ -37,8 +43,8 @@ define(["head-on"], function($h){
 			clearTimeout(this.timeout);
 		}
 		if(health - dmg < 0){
-			health = 0;
 			playerDmg = dmg - health;
+			health = 0;
 		}
 		else{
 			health -= dmg;
