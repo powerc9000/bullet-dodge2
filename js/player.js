@@ -14,7 +14,7 @@ define(["head-on", "constants", "entity", "shield"], function($h, constants, ent
 			setHealth: setHealth,
 			getMaxHealth: getMaxHealth,
 			setMaxHealth: setMaxHealth,
-			update: updatePlayer,
+			//update: updatePlayer,
 			type:"player",
 			hit: bulletCollision,
 			render: renderPlayer,
@@ -23,8 +23,7 @@ define(["head-on", "constants", "entity", "shield"], function($h, constants, ent
 			gravity: gravity,
 			shield: shield
 		}, entity);
-
-
+		player.update = updatePlayer;
 	return player;
 
 
@@ -43,11 +42,14 @@ define(["head-on", "constants", "entity", "shield"], function($h, constants, ent
 
 	}
 	function updatePlayer(delta){
+		var correction;
 		this.keepInBounds(delta);
+		
 		this.move(delta);
 		
 		this.gravity(delta);
 		this.position = this.position.add(this.v.mul(delta));
+		
 		this.shield.update(delta);
 		
 	}
@@ -100,6 +102,15 @@ define(["head-on", "constants", "entity", "shield"], function($h, constants, ent
 		else if(this.position.x <= 0){
 			this.v.x = 0;
 			this.position.x = 0;
+		}
+		if(correction = this.collides($h.ship)){
+			if(correction.normal.x){
+				this.v.x = 0;
+			}
+			if(correction.normal.y){
+				this.v.y = 0;
+			}
+			this.position = this.position.sub($h.Vector(correction.normal.x, correction.normal.y).mul(correction.overlap));
 		}
 	}
 	function bulletCollision(bullet){

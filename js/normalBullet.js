@@ -30,9 +30,9 @@ define(["head-on", "constants"], function($h, constants){
 		}
 		
 	}
-	function init(){
+	function init(position){
 		var totalV = $h.randInt(300, 500);
-		this.position = $h.Vector($h.map.width +100, $h.map.height /2);
+		this.position = position || $h.Vector($h.map.width +100, $h.map.height /2);
 		this.heading = $h.player.position.sub(this.position).normalize();
 		this.angle = calcAngle(this);
 		this.v = this.heading.mul(totalV);
