@@ -6,6 +6,8 @@ define(["bullets", "hud"], function(bullets, hud){
 
 			canvas.drawRect(canvas.width, canvas.height, 0,0, "white");
 			this.player.render(canvas);
+			
+			this.ship.render(canvas);
 			bullets.render(canvas);
 			canvas.drawRect(canvas.width, 10, 0,canvas.height-10, "blue");
 			hud.render(hudCanvas);

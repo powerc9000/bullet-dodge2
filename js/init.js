@@ -1,13 +1,16 @@
-define(["head-on", "player"],function($h, player){
+define(["head-on", "player", "ship"],function($h, player, ship){
 	return function(width, height){
 		$h.canvas.create("main", width, height);
 		$h.canvas.create("hud", width, 200);
 		$h.map = {};
+		$h.player = player
+		$h.ship = ship;
+		$h.ship.init();
 		$h.map.width = width;
 		$h.map.height = height -10 ;
 		$h.canvas("main").append("body");
 		$h.canvas("hud").append("body");
-		$h.player = $h.entity(player);
+		
 		$h.gameState = {};
 		$h.gameState.spawnBullet = true;
 		return{

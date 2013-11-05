@@ -36,6 +36,9 @@ define(["head-on", "seekerBullet", "big-boyBullet", "normalBullet", "entity"], f
 			if(b.destroyed){
 				bullets.splice(i,1);
 			}
+			if(b.collides($h.ship)){
+				b.explode();
+			}
 			b.update(delta);
 			bullets.some(function(bb, idx){
 				if(b.collides(bb) && i !== idx && !b.exploding && !bb.exploding){
@@ -47,11 +50,11 @@ define(["head-on", "seekerBullet", "big-boyBullet", "normalBullet", "entity"], f
 			})
 		});
 	}
-	function createBullets(amt, type){
+	function createBullets(amt, type, position){
 		var b;
 		for(var i=0; i<amt; i++){
 			b = $h.entity(types[type], bulletProto);
-			b.init();
+			b.init(position);
 
 			bullets.push(b);
 			count++;
