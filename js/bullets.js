@@ -1,28 +1,27 @@
 define(["head-on", "seekerBullet", "big-boyBullet", "normalBullet", "entity"], function($h, sb, bb, nb, entity){
-	var ag = arguments;
-	var bullets = [];
-	var cos = Math.cos;
-	var sin = Math.sin;
-	var count = 0;
-	var types = {
-		seeker: sb,
-		bigBoy: bb,
-		normal: nb
-	}
-	var bulletProto = {
-		x:0,
-		y:0,
-		vx:0,
-		vy:0,
-		width:10,
-		height:10,
-		destroyed:false,
-		explode: explodeBullet,
-		bullets: bullets,
-		render: render,
-		calcMidPoint: getMidPoint,
-	}
-	var bulletProto = $h.entity(bulletProto, entity);
+	var ag = arguments,
+		bullets = [],
+		cos = Math.cos,
+		sin = Math.sin,
+		count = 0,
+		types = {
+			seeker: sb,
+			bigBoy: bb,
+			normal: nb
+		},
+		bulletProto = {
+			x:0,
+			y:0,
+			vx:0,
+			vy:0,
+			width:10,
+			height:10,
+			destroyed:false,
+			explode: explodeBullet,
+			bullets: bullets,
+			render: render
+		};
+		bulletProto = $h.entity(bulletProto, entity);
 	return {
 		update: updateBullets,
 		create: createBullets,
@@ -96,12 +95,5 @@ define(["head-on", "seekerBullet", "big-boyBullet", "normalBullet", "entity"], f
 		}
 		
 	}
-	function getMidPoint() {
-	    var cosa = Math.cos(this.angle);
-	    var sina = Math.sin(this.angle);
-	    var wp = this.width/2;
-	    var hp = this.height/2;
-	 	this.midPointx =  ( this.position.x + wp * cosa - hp * sina );
-	    this.midPointy = ( this.position.y + wp * sina + hp * cosa );
-	}
+	
 });

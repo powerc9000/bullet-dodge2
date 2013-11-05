@@ -1,34 +1,52 @@
-define(["head-on", "bullets"], function($h, bullets){
+define(["head-on", "bullets", "entity"], function($h, bullets, entity){
 	return function(ship, local){
 		var loadTime = 3000,
 			barrell,
 			heading,
-			global;
-		global = ship.position.add(local);
-		heading = $h.player.position.sub(global);
-		return{
+			position,
+			cannon;
+		position = ship.position.add(local);
+		heading = $h.player.position.sub(position);
+		cannon = {
 			update:update,
 			render:render,
 			fire: fire,
 			load: load,
-			globalPosition: global,
+			//globalPosition: global,
+			width:40,
+			height:20,
 			loaded: false,
 			loading: false,
 			ship:ship,
 			localPosition:local,
-			heading: heading,
+			position: position,
 			loadTime:loadTime
 		}
+		return $h.entity(cannon, entity);
 	}
 	function update(delta){
-		this.globalPosition = this.ship.position.add(this.localPosition);
-		this.heading = $h.player.position.sub(this.globalPosition);
+		var prevAngle = this.angle;
+		this.position = this.ship.position.add(this.localPosition);
+		this.heading = $h.player.position.sub(this.position);
+		this.angle = Math.atan2(this.heading.y, this.heading.x);
+		console.log(this.angle);
+		if(this.angle > 10*Math.PI/14 || this.angle < Math.PI/6){
+			this.angle = prevAngle;
+			this.canFire = false;
+		}
+		else{
+			this.canFire = true;
+		}
+		this.calcMidPoint();
 	}
 
 	function fire(){
-		bullets.create(1, this.barrell, this.globalPosition);
-		this.loaded = false;
-		this.loading = false;
+		if(this.canFire){
+			bullets.create(1, this.barrell, this.midPoint);
+			this.loaded = false;
+			this.loading = false;
+		}
+		
 	}
 
 	function load(type){
@@ -47,8 +65,7 @@ define(["head-on", "bullets"], function($h, bullets){
 	}
 
 	function render(canvas){
-		var angle = Math.atan2(this.heading.y, this.heading.x);
-		canvas.drawRect(20, 20, this.globalPosition.x, this.globalPosition.y, "black", false, angle);
+		canvas.drawRect(this.width, this.height, this.position.x, this.position.y, "black", false, this.angle);
 	}
 })
 

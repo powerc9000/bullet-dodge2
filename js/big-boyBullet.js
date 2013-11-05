@@ -12,9 +12,9 @@ define(["head-on"], function($h){
 		TTL: 3*1000
 	}
 	function render(canvas){
+		var color
 		if(!this.exploding){
-		var color = (Math.sin(this.TTL/Math.pow(this.TTL/400, 2))> 0) ? "blue" : "red"
-
+			color = (Math.sin(this.TTL/Math.pow(this.TTL/400, 2))> 0) ? "blue" : "red"
 			canvas.drawRect(this.width,this.height, this.position.x, this.position.y, color, false, this.angle);
 		}
 		else{
@@ -61,7 +61,7 @@ define(["head-on"], function($h){
 		else{
 			if(!this.playerHit){
 				$h.getPoints($h.player).some(function(p){
-					if(inCircle(that.midPointx, that.midPointy, that.iteration, p[0], p[1])){
+					if(inCircle(that.midPoint.x, that.midPoint.y, that.iteration, p[0], p[1])){
 						$h.player.hit(that);
 						that.playerHit = true;
 						return true;
