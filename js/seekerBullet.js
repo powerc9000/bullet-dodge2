@@ -8,13 +8,13 @@ define(["head-on"], function($h, ba){
 	}
 
 	function seekerUpdate(delta){
+		var angleDelta;
 		this.TTL -= delta * 1000;
 		if(this.TTL <= 0){
 			this.explode();
 		}
 		if(!this.exploding){
 			if(Date.now() - this.created > 500){
-				var angleDelta;
 				angleDelta = Math.atan2($h.player.position.y + $h.player.height/2 - this.position.y, $h.player.position.x + $h.player.width/2 - this.position.x) - this.angle;
 				this.angle += angleDelta * .05
 				this.position.x += this.speed * delta * Math.cos(this.angle);

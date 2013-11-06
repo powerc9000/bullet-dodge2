@@ -1,4 +1,4 @@
-define(["bullets", "hud"], function(bullets, hud){
+define(["bullets", "hud", "powerups"], function(bullets, hud, powerups){
 	var that;
 	return update;
 	function update(delta){
@@ -6,7 +6,7 @@ define(["bullets", "hud"], function(bullets, hud){
 		delta = delta/1000;
 		this.player.update(delta);
 		bullets.update(delta);
-		
+		powerups.update(delta);
 		// if(this.gameState.spawnBullet){
 		// 	that = this;
 		// 	if(bullets.created() === 0 || bullets.created() % 10){

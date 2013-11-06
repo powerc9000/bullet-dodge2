@@ -21,7 +21,10 @@ define(["head-on", "constants", "entity", "shield"], function($h, constants, ent
 			move: move,
 			keepInBounds: keepInBounds,
 			gravity: gravity,
-			shield: shield
+			shield: shield,
+			powerup: powerup,
+			powerups: [],
+			removePowerup: removePowerup
 		}, entity);
 	return player;
 
@@ -42,6 +45,7 @@ define(["head-on", "constants", "entity", "shield"], function($h, constants, ent
 	}
 	function updatePlayer(delta){
 		var correction;
+		var that = this;
 		this.keepInBounds(delta);
 		
 		this.move(delta);
@@ -50,9 +54,21 @@ define(["head-on", "constants", "entity", "shield"], function($h, constants, ent
 		this.position = this.position.add(this.v.mul(delta));
 		
 		this.shield.update(delta);
-		
+		this.powerups.forEach(function(p, i){
+			p.effectLength -= delta * 1000;
+			if(p.effectLength <= 0){
+				that.removePowerup(p, i);
+			}
+		})
 	}
 
+	function removePowerup(p, idx){
+		switch(p.type){
+			case "knockback":
+				this.noKnockback = false;
+				this.powerups.splice(idx,1);
+		}
+	}
 
 	function move(delta){
 		if($h.keys.up){
@@ -129,7 +145,16 @@ define(["head-on", "constants", "entity", "shield"], function($h, constants, ent
 			health -= this.shield.damage(50);
 			knockback = 500;
 		}
-		this.v = angle.mul(knockback);
+		if(!this.noKnockback){
+			this.v = angle.mul(knockback);
+		}
+		
+	}
+	function powerup(p){
+		if(p.type === "knockback"){
+			this.noKnockback = true;
+			this.powerups.push(p);
+		}
 	}
 	function renderPlayer(canvas){
 		var color;

@@ -12,7 +12,5 @@ define(["head-on"], function($h){
 		var wp = this.width/2;
 		var hp = this.height/2;
 		this.midPoint = $h.Vector(( this.position.x + wp * cosa - hp * sina ), ( this.position.y + wp * sina + hp * cosa ));
-		//this.midPoint =  ( this.position.x + wp * cosa - hp * sina );
-		//this.midPoint = ( this.position.y + wp * sina + hp * cosa );
 	}
 });

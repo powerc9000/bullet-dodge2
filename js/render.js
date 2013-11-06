@@ -1,10 +1,11 @@
-define(["bullets", "hud"], function(bullets, hud){
+define(["bullets", "hud", "powerups"], function(bullets, hud, powerups){
 	return function(canvases){
 		var canvas = canvases.canvas;
 		var hudCanvas = canvases.hud;
 		function render(update, frames){
 
 			canvas.drawRect(canvas.width, canvas.height, 0,0, "white");
+			powerups.render(canvas);
 			this.player.render(canvas);
 			
 			this.ship.render(canvas);

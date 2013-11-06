@@ -11,6 +11,7 @@ define(["head-on"], function($h){
 		speed: 200,
 		TTL: 3*1000
 	}
+
 	function render(canvas){
 		var color
 		if(!this.exploding){
@@ -20,15 +21,15 @@ define(["head-on"], function($h){
 		else{
 			canvas.drawCircle(this.midPointx, this.midPointy, this.iteration , "transparent", {color:"red", width:"2px"});
 		}
-		
-
 	}
+
 	function init(){
 		this.position = $h.Vector($h.map.width, 250);
 		this.heading = $h.player.position.sub(this.position).normalize();
 		this.angle = Math.atan2(this.heading.y, this.heading.x);
 		this.v = this.heading.mul(this.speed);
 	}
+
 	function destroy(reason, obj){
 		obj = obj || {};
 		if(reason === "timeout"){
@@ -68,10 +69,9 @@ define(["head-on"], function($h){
 					}
 				});
 			}
-			
 		}
-		
 	}
+
 	function inCircle(cX, cY, radius, x,y){
 		return Math.pow((cX -x),2) + Math.pow((cY - y),2) < Math.pow(radius, 2);
 	}
