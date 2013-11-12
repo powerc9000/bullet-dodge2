@@ -26,6 +26,10 @@ define(["head-on", "player", "ship"],function($h, player, ship){
 		{
 			name:"dudeHit",
 			src:"img/dude_hit.png"
+		}, 
+		{
+			name:"dudeLeanLeft",
+			src:"img/dude_lean_left.png"
 		}
 		], false, function(){
 			player.init();

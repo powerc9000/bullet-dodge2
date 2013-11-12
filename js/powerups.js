@@ -10,7 +10,7 @@ define(["head-on"], function($h){
 
 	function update(delta){
 		var that = this;
-		if($h.gameTime - this.lastSpawn > 1000){
+		if($h.gameTime - this.lastSpawn > 10000){
 			this.spawnPowerup();
 			this.lastSpawn = $h.gameTime;
 		}
@@ -21,7 +21,6 @@ define(["head-on"], function($h){
 			}
 			p.TTL -= delta * 1000;
 			if(p.TTL <=0){
-				console.log("hallo")
 				p.destroy = true;
 				return;
 			}

@@ -8,20 +8,28 @@ define(["head-on", "entity", "cannon"], function($h, entity, cannon){
 
 	return ship
 	function update(delta){
+		var cannon = this.cannons[this.currentCannon];
 		this.cannons.forEach(function(c){
 			c.update(delta);
-			if(!c.loading && !c.loaded){
+			
+		});
+		if(Date.now() - this.waitForNextFire > 300){
+			if(!cannon.loading && !cannon.loaded){
 				if($h.randInt(0,100) < 10){
-					c.load("seeker")
+					cannon.load("seeker")
 				}
 				else{
-					c.load("normal");
+					cannon.load("normal");
 				}
 			}
-			else if(c.loaded){
-				c.fire();
+			else if(cannon.loaded){
+				cannon.fire();
 			}
-		});
+			this.currentCannon = (this.currentCannon+1) % this.cannons.length;
+			this.waitForNextFire = Date.now();
+		}
+		
+
 	}
 
 	function render(canvas){
@@ -32,12 +40,15 @@ define(["head-on", "entity", "cannon"], function($h, entity, cannon){
 	}
 
 	function init(){
+		this.currentCannon = 0;
+		this.waitForNextFire = Date.now();
 		this.position = $h.Vector(600, 0);
 		this.width = 200;
 		this.height = 200;
 		this.angle = 0;
 		this.cannons.push(cannon(this, $h.Vector(20,200)));
 		this.cannons.push(cannon(this, $h.Vector(60, 200)));
+		this.cannons.push(cannon(this, $h.Vector(100, 200)));
 
 	}
 });
