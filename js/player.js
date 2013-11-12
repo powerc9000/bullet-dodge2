@@ -24,7 +24,8 @@ define(["head-on", "constants", "entity", "shield"], function($h, constants, ent
 			shield: shield,
 			powerup: powerup,
 			powerups: [],
-			removePowerup: removePowerup
+			removePowerup: removePowerup,
+			init: init
 		}, entity);
 	return player;
 
@@ -46,6 +47,9 @@ define(["head-on", "constants", "entity", "shield"], function($h, constants, ent
 	function updatePlayer(delta){
 		var correction;
 		var that = this;
+		if(Date.now() - this.hitTime > 500){
+			this.image = $h.images("dudeLeanRight");
+		}
 		this.keepInBounds(delta);
 		
 		this.move(delta);
@@ -61,7 +65,12 @@ define(["head-on", "constants", "entity", "shield"], function($h, constants, ent
 			}
 		})
 	}
-
+	function init(){
+		this.image = $h.images("dudeLeanRight");
+		console.log($h.images)
+		this.width = this.image.width;
+		this.height = this.image.height;
+	}
 	function removePowerup(p, idx){
 		switch(p.type){
 			case "knockback":
@@ -147,6 +156,8 @@ define(["head-on", "constants", "entity", "shield"], function($h, constants, ent
 		}
 		if(!this.noKnockback){
 			this.v = angle.mul(knockback);
+			this.image = $h.images("dudeHit");
+			this.hitTime = Date.now();
 		}
 		
 	}
@@ -158,6 +169,6 @@ define(["head-on", "constants", "entity", "shield"], function($h, constants, ent
 	}
 	function renderPlayer(canvas){
 		var color;
-		canvas.drawRect(this.width,this.height, this.position.x, this.position.y, "green", false, this.angle);
+		canvas.drawImage(this.image, this.position.x, this.position.y);
 	}
 });
