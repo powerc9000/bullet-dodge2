@@ -25,7 +25,8 @@ define(["head-on", "constants", "entity", "shield"], function($h, constants, ent
 			powerup: powerup,
 			powerups: [],
 			removePowerup: removePowerup,
-			init: init
+			init: init,
+			setImage: setImage
 		}, entity);
 	return player;
 
@@ -47,16 +48,15 @@ define(["head-on", "constants", "entity", "shield"], function($h, constants, ent
 	function updatePlayer(delta){
 		var correction;
 		var that = this;
-		if(Date.now() - this.hitTime > 500){
-			this.image = $h.images("dudeLeanRight");
-		}
+		
 		this.keepInBounds(delta);
 		
 		this.move(delta);
 		
 		this.gravity(delta);
 		this.position = this.position.add(this.v.mul(delta));
-		
+		this.setImage();
+		this.calcMidPoint();
 		this.shield.update(delta);
 		this.powerups.forEach(function(p, i){
 			p.effectLength -= delta * 1000;
@@ -99,7 +99,22 @@ define(["head-on", "constants", "entity", "shield"], function($h, constants, ent
 		}
 	}
 
-
+	function setImage(){
+		if(this.hitTime){
+			console.log(this.hitTime)
+			if(Date.now() - this.hitTime > 500){
+				this.hitTime = false;
+			}
+		}else if(this.v.x > 0){
+			console.log("hey")
+			this.image = $h.images("dudeLeanRight");
+		}
+		else if(this.v.x < 0){
+			this.image = $h.images("dudeLeanLeft");
+		}
+		this.width = this.image.width;
+		this.height = this.image.height;
+	}
 	function gravity(delta){
 		this.v = this.v.add(constants.gravity.mul(delta));
 	}
