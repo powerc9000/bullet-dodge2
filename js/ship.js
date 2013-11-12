@@ -17,7 +17,6 @@ define(["head-on", "entity", "cannon"], function($h, entity, cannon){
 				else{
 					c.load("normal");
 				}
-				
 			}
 			else if(c.loaded){
 				c.fire();

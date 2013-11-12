@@ -320,7 +320,7 @@ define(function(){
                     	loaded += 1;
                     	imgCallback && imgCallback(image.name);
                     	if(loaded === total){
-                    		allCallback && allCallBack;
+                    		allCallback && allCallback();
                     		that.imagesLoaded = true;
                     	}
                     }

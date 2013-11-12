@@ -29,7 +29,6 @@ define(["head-on", "bullets", "entity"], function($h, bullets, entity){
 		this.position = this.ship.position.add(this.localPosition);
 		this.heading = $h.player.position.sub(this.position);
 		this.angle = Math.atan2(this.heading.y, this.heading.x);
-		console.log(this.angle);
 		if(this.angle > 10*Math.PI/14 || this.angle < Math.PI/6){
 			this.angle = prevAngle;
 			this.canFire = false;
@@ -67,5 +66,5 @@ define(["head-on", "bullets", "entity"], function($h, bullets, entity){
 	function render(canvas){
 		canvas.drawRect(this.width, this.height, this.position.x, this.position.y, "black", false, this.angle);
 	}
-})
+});
 

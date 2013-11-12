@@ -10,7 +10,26 @@ define(["head-on", "player", "ship"],function($h, player, ship){
 		$h.map.height = height -10 ;
 		$h.canvas("main").append("body");
 		$h.canvas("hud").append("body");
-		
+		$h.loadImages([
+		{
+			name:"normalBullet", 
+			src:"img/normalBullet.png"
+		}, 
+		{
+			name:"seekerBullet", 
+			src:"img/seekerBullet.png"
+		},
+		{
+			name:"dudeLeanRight",
+			src:"img/dude_lean_right.png"
+		},
+		{
+			name:"dudeHit",
+			src:"img/dude_hit.png"
+		}
+		], false, function(){
+			player.init();
+		});
 		$h.gameState = {};
 		$h.gameState.spawnBullet = true;
 		return{

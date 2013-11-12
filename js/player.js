@@ -21,7 +21,11 @@ define(["head-on", "constants", "entity", "shield"], function($h, constants, ent
 			move: move,
 			keepInBounds: keepInBounds,
 			gravity: gravity,
-			shield: shield
+			shield: shield,
+			powerup: powerup,
+			powerups: [],
+			removePowerup: removePowerup,
+			init: init
 		}, entity);
 	return player;
 
@@ -42,6 +46,10 @@ define(["head-on", "constants", "entity", "shield"], function($h, constants, ent
 	}
 	function updatePlayer(delta){
 		var correction;
+		var that = this;
+		if(Date.now() - this.hitTime > 500){
+			this.image = $h.images("dudeLeanRight");
+		}
 		this.keepInBounds(delta);
 		
 		this.move(delta);
@@ -50,9 +58,26 @@ define(["head-on", "constants", "entity", "shield"], function($h, constants, ent
 		this.position = this.position.add(this.v.mul(delta));
 		
 		this.shield.update(delta);
-		
+		this.powerups.forEach(function(p, i){
+			p.effectLength -= delta * 1000;
+			if(p.effectLength <= 0){
+				that.removePowerup(p, i);
+			}
+		})
 	}
-
+	function init(){
+		this.image = $h.images("dudeLeanRight");
+		console.log($h.images)
+		this.width = this.image.width;
+		this.height = this.image.height;
+	}
+	function removePowerup(p, idx){
+		switch(p.type){
+			case "knockback":
+				this.noKnockback = false;
+				this.powerups.splice(idx,1);
+		}
+	}
 
 	function move(delta){
 		if($h.keys.up){
@@ -129,10 +154,21 @@ define(["head-on", "constants", "entity", "shield"], function($h, constants, ent
 			health -= this.shield.damage(50);
 			knockback = 500;
 		}
-		this.v = angle.mul(knockback);
+		if(!this.noKnockback){
+			this.v = angle.mul(knockback);
+			this.image = $h.images("dudeHit");
+			this.hitTime = Date.now();
+		}
+		
+	}
+	function powerup(p){
+		if(p.type === "knockback"){
+			this.noKnockback = true;
+			this.powerups.push(p);
+		}
 	}
 	function renderPlayer(canvas){
 		var color;
-		canvas.drawRect(this.width,this.height, this.position.x, this.position.y, "green", false, this.angle);
+		canvas.drawImage(this.image, this.position.x, this.position.y);
 	}
 });
