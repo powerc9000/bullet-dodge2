@@ -55,7 +55,7 @@ define(["head-on"], function($h){
 		base.position = $h.Vector($h.randInt(0,$h.map.width), $h.randInt(0,$h.map.height));
 		switch(type){
 			case "knockback":
-				base.TTL = 3000;
+				base.TTL = 12000;
 				base.color = "blue";
 				base.effectLength = 10000;
 				break;

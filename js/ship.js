@@ -46,9 +46,10 @@ define(["head-on", "entity", "cannon"], function($h, entity, cannon){
 		this.width = 200;
 		this.height = 200;
 		this.angle = 0;
-		this.cannons.push(cannon(this, $h.Vector(20,200)));
 		this.cannons.push(cannon(this, $h.Vector(60, 200)));
 		this.cannons.push(cannon(this, $h.Vector(100, 200)));
+		this.cannons.push(cannon(this, $h.Vector(140, 200)));
+		this.cannons.push(cannon(this, $h.Vector(180, 200)));
 
 	}
 });
