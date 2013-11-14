@@ -19,7 +19,7 @@ define(["head-on", "seekerBullet", "big-boyBullet", "normalBullet", "entity"], f
 			destroyed:false,
 			explode: explodeBullet,
 			bullets: bullets,
-			render: render
+			render: render,
 		};
 		bulletProto = $h.entity(bulletProto, entity);
 	return {
@@ -34,9 +34,6 @@ define(["head-on", "seekerBullet", "big-boyBullet", "normalBullet", "entity"], f
 		bullets.forEach(function(b,i){
 			if(b.destroyed){
 				bullets.splice(i,1);
-			}
-			if(b.collides($h.ship)){
-				b.explode();
 			}
 			b.update(delta);
 			bullets.some(function(bb, idx){
@@ -53,6 +50,7 @@ define(["head-on", "seekerBullet", "big-boyBullet", "normalBullet", "entity"], f
 		var b;
 		for(var i=0; i<amt; i++){
 			b = $h.entity(types[type], bulletProto);
+			b.super = bulletProto;
 			b.init(position);
 
 			bullets.push(b);
@@ -74,16 +72,20 @@ define(["head-on", "seekerBullet", "big-boyBullet", "normalBullet", "entity"], f
 			return;
 		}
 		this.exploding = true;
+		this.explodeSound && this.explodeSound.play();
 		interval = setInterval(function(){
-			if(i > iterations){
-				clearInterval(interval);
-				that.destroy("exploded");
-				return;
+			if(!$h.isPaused()){
+				if(i > iterations){
+					clearInterval(interval);
+					that.destroy("exploded");
+					return;
+				}
+				else{
+					that.iteration = i;
+				}
+				i++;
 			}
-			else{
-				that.iteration = i;
-			}
-			i++;
+			
 		}, 20)
 	}
 	function render(canvas){

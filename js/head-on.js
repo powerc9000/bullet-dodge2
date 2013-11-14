@@ -291,7 +291,15 @@ define(function(){
                 },
 
                  
-
+                pause: function(){
+                	this.paused = true;
+                },
+                unpause: function(){
+                	this.paused = false;
+                },
+                isPaused: function(){
+                	return this.paused;
+                },
                 group: function(groupName, entity){
                     if(this.groups[groupName]){
                         if(entity){
@@ -345,7 +353,9 @@ define(function(){
                     modifier = now - then;
                    	this.trueFps = 1/(modifier/1000);
                     this._ticks+=1;
-                    this._update(modifier, this._ticks);
+                    if(!this.paused){
+                    	this._update(modifier, this._ticks);
+                    }
                     this._render(modifier, this._ticks);
                     this.gameTime += modifier;
 

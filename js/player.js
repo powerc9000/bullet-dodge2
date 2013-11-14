@@ -101,12 +101,10 @@ define(["head-on", "constants", "entity", "shield"], function($h, constants, ent
 
 	function setImage(){
 		if(this.hitTime){
-			console.log(this.hitTime)
 			if(Date.now() - this.hitTime > 500){
 				this.hitTime = false;
 			}
 		}else if(this.v.x > 0){
-			console.log("hey")
 			this.image = $h.images("dudeLeanRight");
 		}
 		else if(this.v.x < 0){

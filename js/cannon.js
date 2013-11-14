@@ -20,7 +20,8 @@ define(["head-on", "bullets", "entity"], function($h, bullets, entity){
 			ship:ship,
 			localPosition:local,
 			position: position,
-			loadTime:loadTime
+			loadTime:loadTime, 
+			sound: new Audio("")
 		}
 		return $h.entity(cannon, entity);
 	}
@@ -29,23 +30,15 @@ define(["head-on", "bullets", "entity"], function($h, bullets, entity){
 		this.position = this.ship.position.add(this.localPosition);
 		this.heading = $h.player.position.sub(this.position);
 		this.angle = Math.atan2(this.heading.y, this.heading.x);
-		if(this.angle > 10*Math.PI/14 || this.angle < Math.PI/6){
-			this.angle = prevAngle;
-			this.canFire = false;
-		}
-		else{
-			this.canFire = true;
-		}
 		this.calcMidPoint();
 	}
 
 	function fire(){
-		if(this.canFire){
-			bullets.create(1, this.barrell, this.midPoint);
-			this.loaded = false;
-			this.loading = false;
-		}
-		
+		bullets.create(1, this.barrell, this.position);
+		this.loaded = false;
+		this.loading = false;
+		this.sound.volume = .2;
+		this.sound.play();
 	}
 
 	function load(type){

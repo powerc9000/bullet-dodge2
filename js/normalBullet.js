@@ -9,6 +9,7 @@ define(["head-on", "constants"], function($h, constants){
 		prevX:0,
 		prevY:0,
 		heading: {},
+
 	}
 
 	function normalUpdate(delta){
@@ -37,6 +38,7 @@ define(["head-on", "constants"], function($h, constants){
 		this.angle = calcAngle(this);
 		this.v = this.heading.mul(totalV);
 		this.image = $h.images("normalBullet")
+		this.explodeSound= new Audio("")
 	}
 	function destroy(reason, entity){
 		if(reason === "collide"){

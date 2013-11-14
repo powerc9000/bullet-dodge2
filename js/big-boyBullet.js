@@ -1,4 +1,4 @@
-define(["head-on"], function($h){
+define(["head-on", "constants"], function($h, c){
 	return {
 		render: render,
 		init: init,
@@ -8,26 +8,29 @@ define(["head-on"], function($h){
 		width: 100,
 		height: 50,
 		explosionIterations:200,
-		speed: 200,
-		TTL: 3*1000
+		speed: 100,
+		TTL: 5*1000,
 	}
 
 	function render(canvas){
 		var color
 		if(!this.exploding){
-			color = (Math.sin(this.TTL/Math.pow(this.TTL/400, 2))> 0) ? "blue" : "red"
-			canvas.drawRect(this.width,this.height, this.position.x, this.position.y, color, false, this.angle);
+			this.image = (Math.sin(this.TTL/Math.pow(this.TTL/400, 2))> 0) ? $h.images("bigBoy1") : $h.images("bigBoy2")
+			this.super.render.call(this, canvas);
 		}
 		else{
-			canvas.drawCircle(this.midPointx, this.midPointy, this.iteration , "transparent", {color:"red", width:"2px"});
+			canvas.drawCircle(this.midPoint.x, this.midPoint.y, this.iteration , "transparent", {color:"red", width:"2px"});
 		}
 	}
 
-	function init(){
-		this.position = $h.Vector($h.map.width, 250);
-		this.heading = $h.player.position.sub(this.position).normalize();
+	function init(position){
+		this.position = position
+		this.heading = $h.player.midPoint.sub(this.position).normalize();
 		this.angle = Math.atan2(this.heading.y, this.heading.x);
 		this.v = this.heading.mul(this.speed);
+		this.image = $h.images("bigBoy1");
+		this.width = this.image.width;
+		this.height = this.image.height;
 	}
 
 	function destroy(reason, obj){
@@ -75,4 +78,5 @@ define(["head-on"], function($h){
 	function inCircle(cX, cY, radius, x,y){
 		return Math.pow((cX -x),2) + Math.pow((cY - y),2) < Math.pow(radius, 2);
 	}
+
 })
