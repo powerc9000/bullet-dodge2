@@ -6,7 +6,6 @@ define(["head-on"], function($h, ba){
 		destroy: destroy,
 		type:"seeker"
 	}
-
 	function seekerUpdate(delta){
 		var angleDelta;
 		this.TTL -= delta * 1000;
@@ -15,7 +14,7 @@ define(["head-on"], function($h, ba){
 		}
 		if(!this.exploding){
 			if(Date.now() - this.created > 500){
-				angleDelta = Math.atan2($h.player.position.y + $h.player.height/2 - this.position.y, $h.player.position.x + $h.player.width/2 - this.position.x) - this.angle;
+				angleDelta = Math.atan2($h.player.midPoint.y - this.position.y, $h.player.midPoint.x - this.position.x) - this.angle;
 				this.angle += angleDelta * .05
 				this.position.x += this.speed * delta * Math.cos(this.angle);
 				this.position.y += this.speed * delta * Math.sin(this.angle);

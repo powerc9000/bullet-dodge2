@@ -5,7 +5,7 @@ define(["head-on", "player", "ship"],function($h, player, ship){
 		$h.map = {};
 		$h.player = player
 		$h.ship = ship;
-		$h.ship.init();
+		
 		$h.map.width = width;
 		$h.map.height = height -10 ;
 		$h.canvas("main").append("body");
@@ -13,11 +13,11 @@ define(["head-on", "player", "ship"],function($h, player, ship){
 		$h.loadImages([
 		{
 			name:"normalBullet", 
-			src:"img/normalBullet.png"
+			src:"img/normal_bullet_2.png"
 		}, 
 		{
 			name:"seekerBullet", 
-			src:"img/seekerBullet.png"
+			src:"img/seeker_bullet_2.png"
 		},
 		{
 			name:"dudeLeanRight",
@@ -30,9 +30,22 @@ define(["head-on", "player", "ship"],function($h, player, ship){
 		{
 			name:"dudeLeanLeft",
 			src:"img/dude_lean_left.png"
+		},
+		{
+			name:"ship",
+			src:"img/ship.png"
+		},
+		{
+			name:"bigBoy1",
+			src:"img/big_boy_color_1.png"
+		},
+		{
+			name:"bigBoy2",
+			src:"img/big_boy_color_2.png"
 		}
 		], false, function(){
 			player.init();
+			$h.ship.init();
 		});
 		$h.gameState = {};
 		$h.gameState.spawnBullet = true;
