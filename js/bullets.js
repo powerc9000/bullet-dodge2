@@ -20,6 +20,7 @@ define(["head-on", "seekerBullet", "big-boyBullet", "normalBullet", "entity"], f
 			explode: explodeBullet,
 			bullets: bullets,
 			render: render,
+			explosionLength: 1000
 		};
 		bulletProto = $h.entity(bulletProto, entity);
 	return {
@@ -68,6 +69,7 @@ define(["head-on", "seekerBullet", "big-boyBullet", "normalBullet", "entity"], f
 		var iterations = this.explosionIterations || 50
 		var interval;
 		var that = this;
+		var speed = this.explosionLength / iterations;
 		if(this.exploding){
 			return;
 		}
@@ -86,7 +88,7 @@ define(["head-on", "seekerBullet", "big-boyBullet", "normalBullet", "entity"], f
 				i++;
 			}
 			
-		}, 20)
+		}, speed)
 	}
 	function render(canvas){
 		if(!this.exploding){

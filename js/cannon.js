@@ -1,5 +1,5 @@
 define(["head-on", "bullets", "entity"], function($h, bullets, entity){
-	return function(ship, local){
+	return function(ship, local, startingLoad){
 		var loadTime = 3000,
 			barrell,
 			heading,
@@ -22,6 +22,10 @@ define(["head-on", "bullets", "entity"], function($h, bullets, entity){
 			position: position,
 			loadTime:loadTime, 
 			sound: new Audio("")
+		}
+		if(startingLoad){
+			cannon.loaded = true;
+			cannon.barrell = startingLoad;
 		}
 		return $h.entity(cannon, entity);
 	}
@@ -47,6 +51,8 @@ define(["head-on", "bullets", "entity"], function($h, bullets, entity){
 		this.loading = true;
 		if(type === "seeker"){
 			this.loadTime = 4000
+		}else if(type === "bigBoy"){
+			this.loadTime = 5000;
 		}
 		else{
 			this.loadTime = 3000 

@@ -11,25 +11,32 @@ define(["head-on", "entity", "cannon"], function($h, entity, cannon){
 	return ship
 	function update(delta){
 		var cannon = this.cannons[this.currentCannon];
-		var rando = $h.randInt(0,100);
+		var count = 0;
 		this.cannons.forEach(function(c){
+			var rando = $h.randInt(0,100);
 			c.update(delta);
-			
-		});
-		if(Date.now() - this.waitForNextFire > 300){
-			if(!cannon.loading && !cannon.loaded){
+			if(!c.loading && !c.loaded){
 				if(rando < 5){
-					cannon.load("seeker")
+					c.load("seeker");
 				}else if(rando <= 10 && rando >= 5){
-					cannon.load("bigBoy");
+					c.load("bigBoy");
 				}
 				else{
-					cannon.load("normal");
+					c.load("normal");
 				}
 			}
-			else if(cannon.loaded){
+			
+		});
+		if(Date.now() - this.waitForNextFire > 2000){
+			while(!cannon.loaded && count < this.cannons.length){
+				this.currentCannon = (this.currentCannon+1) % this.cannons.length;
+				cannon = this.cannons[this.currentCannon];
+				count++;
+			}
+			if(count < this.cannons.length){
 				cannon.fire();
 			}
+			
 			this.currentCannon = (this.currentCannon+1) % this.cannons.length;
 			this.waitForNextFire = Date.now();
 		}
@@ -41,12 +48,12 @@ define(["head-on", "entity", "cannon"], function($h, entity, cannon){
 			this.direction = -1;
 		}
 		
-		if(this.position.y >= 0 && (this.position.y + this.height) <= $h.map.height ){
+		if(this.position.y >= 0 && (this.position.y + this.height) <= $h.map.height -20 ){
 			this.position = this.position.add(this.v.mul(this.direction).mul(delta));
 		}else if( this.position.y < 0){
 			this.position.y = 0;
-		}else if(this.position.y +this.height> $h.map.height){
-			this.position.y = $h.map.height - this.height;
+		}else if(this.position.y +this.height> $h.map.height - 20){
+			this.position.y = $h.map.height - this.height - 20;
 		}
 		
 
@@ -68,7 +75,7 @@ define(["head-on", "entity", "cannon"], function($h, entity, cannon){
 		this.height = this.image.height;
 		this.angle = 0;
 		
-		this.cannons.push(cannon(this, $h.Vector(70, 190)));
+		this.cannons.push(cannon(this, $h.Vector(70, 190), "normal"));
 		this.cannons.push(cannon(this, $h.Vector(90, 190)));
 		this.cannons.push(cannon(this, $h.Vector(110, 190)));
 		this.cannons.push(cannon(this, $h.Vector(130, 190)));

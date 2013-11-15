@@ -10,6 +10,7 @@ define(["head-on", "constants"], function($h, c){
 		explosionIterations:200,
 		speed: 100,
 		TTL: 5*1000,
+		explosionLength: 200
 	}
 
 	function render(canvas){
