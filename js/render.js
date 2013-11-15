@@ -14,8 +14,7 @@ define(["bullets", "hud", "powerups"], function(bullets, hud, powerups){
 			hud.render(hudCanvas);
 			if(this.isPaused()){
 				canvas.drawText("Game Paused", this.map.width/2, this.map.height/2, "30px", "black", "center", "middle")
-				canvas.drawText("(Press p to unpause)", this.map.width/2, this.map.height/2+40, "30px", "black", "center", "middle")
-				
+				canvas.drawText("(Press p to resume)", this.map.width/2, this.map.height/2+40, "30px", "black", "center", "middle")
 			}
 		}
 		return render;

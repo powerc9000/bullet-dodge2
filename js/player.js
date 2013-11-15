@@ -1,4 +1,4 @@
-define(["head-on", "constants", "entity", "shield"], function($h, constants, entity, shield){
+define(["head-on", "constants", "entity", "shield", "jetpack"], function($h, constants, entity, shield, jetpack){
 	
 	var health = 100,
 		maxHealth = 100,
@@ -26,7 +26,8 @@ define(["head-on", "constants", "entity", "shield"], function($h, constants, ent
 			powerups: [],
 			removePowerup: removePowerup,
 			init: init,
-			setImage: setImage
+			setImage: setImage,
+			jetpack: jetpack
 		}, entity);
 	return player;
 
@@ -52,7 +53,7 @@ define(["head-on", "constants", "entity", "shield"], function($h, constants, ent
 		this.keepInBounds(delta);
 		
 		this.move(delta);
-		
+		this.jetpack.update(delta);
 		this.gravity(delta);
 		this.position = this.position.add(this.v.mul(delta));
 		this.setImage();
@@ -69,6 +70,12 @@ define(["head-on", "constants", "entity", "shield"], function($h, constants, ent
 		this.image = $h.images("dudeLeanRight");
 		this.width = this.image.width;
 		this.height = this.image.height;
+		this.jetpack.setMaxFuel(100);
+		this.jetpack.setFuel(100);
+		this.jetpack.setFuelPerSecond(7);
+		this.jetpack.setRefuelPerSecond(5);
+
+
 	}
 	function removePowerup(p, idx){
 		switch(p.type){
@@ -79,22 +86,37 @@ define(["head-on", "constants", "entity", "shield"], function($h, constants, ent
 	}
 
 	function move(delta){
-		if($h.keys.up){
+		if($h.keys.up && this.jetpack.getFuel() > 0){
+			console.log(this.jetpack.getFuel())
 			this.v = this.v.sub(this.ay.mul(delta));
+			this.jetpack.useFuel(delta);
 		}
-		if($h.keys.down){
+		if($h.keys.down && this.jetpack.getFuel() > 0 && !this.onGround){
 			if(this.v.y < 0){
 				this.v = this.v.add($h.Vector(0,1000).mul(delta));
 			}
 			this.v = this.v.add(this.ay.mul(delta));
+			this.jetpack.useFuel(delta);
 		}
 		
 		if($h.keys.right){
-			this.v = this.v.add(this.ax.mul(delta));
+			if(!this.onGround && this.jetpack.getFuel() > 0){
+				this.jetpack.useFuel(delta);
+				this.v = this.v.add(this.ax.mul(delta));
+			}else if(this.onGround){
+				this.v = this.v.add(this.ax.mul(delta));
+			}
+			
 		}
 
 		if($h.keys.left){
-			this.v = this.v.sub(this.ax.mul(delta));
+			if(!this.onGround && this.jetpack.getFuel() > 0){
+				this.jetpack.useFuel(delta);
+				this.v = this.v.sub(this.ax.mul(delta));
+			}else if(this.onGround){
+				this.v = this.v.sub(this.ax.mul(delta));
+			}
+			
 		}
 	}
 
@@ -126,8 +148,15 @@ define(["head-on", "constants", "entity", "shield"], function($h, constants, ent
 
 		if(this.position.y >= $h.map.height - this.height && this.v.y >= 0){
 			this.position.y = $h.map.height - this.height;
+			this.jetpack.setRefuelPerSecond(20);
 			this.v.y = 0;
-		}else if(this.position.y <= 0){
+			this.onGround = true;
+		}else{
+			this.jetpack.setRefuelPerSecond(5);
+			this.onGround = false;
+		} 
+
+		if(this.position.y <= 0){
 			this.position.y = 0;
 			this.v.y = 0;
 		}

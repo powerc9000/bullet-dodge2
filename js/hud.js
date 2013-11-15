@@ -24,7 +24,7 @@ define(["head-on"], function($h){
 
 		canvas.drawRect(200, 20, 300, 0, "black");
 		canvas.drawRect($h.player.shield.getHealth()/ $h.player.shield.getMaxHealth() * 200, 20, 300, 0, "purple");
-		
+		canvas.drawText("Shields", 300 + 100, 30, "15px", "black", "center", "middle");
 		if($h._ticks % 50 === 0){
 			trueFps = Math.floor($h.trueFps)
 		}
@@ -32,13 +32,15 @@ define(["head-on"], function($h){
 		canvas.drawText(
 			"Health: ("+Math.floor($h.player.getHealth())+"/"+$h.player.getMaxHealth()+")", 
 			healthbar.width/2 + healthbar.x, 
-			healthbar.height/2 + healthbar.y, 
+			30, 
 			"15px", 
-			"white", 
+			"black", 
 			"center", 
 			"middle")
+		canvas.drawRect(200,20, 600, 0, "black");
+		canvas.drawRect($h.player.jetpack.getFuel()/ $h.player.jetpack.getMaxFuel() * 200, 20, 600, 0, "grey");
+		canvas.drawText("Jetpack Fuel", 600 + 100, 30, "15px", "black", "center", "middle");
 
-		
 	}
 	function update(){
 

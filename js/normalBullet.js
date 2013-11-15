@@ -9,7 +9,6 @@ define(["head-on", "constants"], function($h, constants){
 		prevX:0,
 		prevY:0,
 		heading: {},
-
 	}
 
 	function normalUpdate(delta){
