@@ -2,6 +2,8 @@ define(["head-on", "player", "ship"],function($h, player, ship){
 	return function(width, height){
 		$h.canvas.create("main", width, height);
 		$h.canvas.create("hud", width, 200);
+		$h.canvas.create("background", width, height);
+		
 		$h.map = {};
 		$h.player = player
 		$h.ship = ship;
@@ -10,11 +12,18 @@ define(["head-on", "player", "ship"],function($h, player, ship){
 		$h.map.height = height -10 ;
 		$h.canvas("main").append("body");
 		$h.canvas("hud").append("body");
+		// $h.canvas("background").append("body");
+		// $h.canvas("background").cavanas.style.position ="aboslute";
+
 		$h.loadImages([
 		{
 			name:"normalBullet", 
 			src:"img/normal_bullet_2.png"
 		}, 
+		{
+			name:"background",
+			src:"img/background.png"
+		},
 		{
 			name:"seekerBullet", 
 			src:"img/seeker_bullet_2.png"
@@ -51,7 +60,7 @@ define(["head-on", "player", "ship"],function($h, player, ship){
 		$h.gameState.spawnBullet = true;
 		return{
 			canvas: $h.canvas("main"),
-			hud: $h.canvas("hud")
+			hud: $h.canvas("hud"),
 		}
 	}
 	

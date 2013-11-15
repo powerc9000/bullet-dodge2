@@ -4,7 +4,7 @@ define(["bullets", "hud", "powerups"], function(bullets, hud, powerups){
 		var hudCanvas = canvases.hud;
 		function render(update, frames){
 
-			canvas.drawRect(canvas.width, canvas.height, 0,0, "white");
+			canvas.drawImage(this.images("background"), 0,0);
 			powerups.render(canvas);
 			this.player.render(canvas);
 			

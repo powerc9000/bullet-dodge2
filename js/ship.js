@@ -41,10 +41,12 @@ define(["head-on", "entity", "cannon"], function($h, entity, cannon){
 			this.direction = -1;
 		}
 		
-		if(this.position.y >= 0 && (this.position.y + this.height) < $h.map.height ){
+		if(this.position.y >= 0 && (this.position.y + this.height) <= $h.map.height ){
 			this.position = this.position.add(this.v.mul(this.direction).mul(delta));
 		}else if( this.position.y < 0){
 			this.position.y = 0;
+		}else if(this.position.y +this.height> $h.map.height){
+			this.position.y = $h.map.height - this.height;
 		}
 		
 
