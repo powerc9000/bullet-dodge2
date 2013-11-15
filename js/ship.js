@@ -5,41 +5,16 @@ define(["head-on", "entity", "cannon"], function($h, entity, cannon){
 		cannons: [],
 		init: init,
 		direction: 1,
-		v: $h.Vector(0,40)
+		v: $h.Vector(0,40),
+		updateCannons: updateCannons,
+		fireCannons: fireCannons
 	}, entity);
 
 	return ship
 	function update(delta){
-		var cannon = this.cannons[this.currentCannon];
-		var count = 0;
-		this.cannons.forEach(function(c){
-			var rando = $h.randInt(0,100);
-			c.update(delta);
-			if(!c.loading && !c.loaded){
-				if(rando < 5){
-					c.load("seeker");
-				}else if(rando <= 10 && rando >= 5){
-					c.load("bigBoy");
-				}
-				else{
-					c.load("normal");
-				}
-			}
-			
-		});
-		if(Date.now() - this.waitForNextFire > 2000){
-			while(!cannon.loaded && count < this.cannons.length){
-				this.currentCannon = (this.currentCannon+1) % this.cannons.length;
-				cannon = this.cannons[this.currentCannon];
-				count++;
-			}
-			if(count < this.cannons.length){
-				cannon.fire();
-			}
-			
-			this.currentCannon = (this.currentCannon+1) % this.cannons.length;
-			this.waitForNextFire = Date.now();
-		}
+		this.updateCannons();
+		this.fireCannons();
+		
 		this.direction = $h.player.position.sub(this.position).normalize().y;
 		if(this.direction > 0){
 			this.direction = 1;
@@ -65,7 +40,40 @@ define(["head-on", "entity", "cannon"], function($h, entity, cannon){
 		// 	c.render(canvas);
 		// })
 	}
-
+	function updateCannons(delta){
+		this.cannons.forEach(function(c){
+			var rando = $h.randInt(0,100);
+			c.update(delta);
+			if(!c.loading && !c.loaded){
+				if(rando < 5){
+					c.load("seeker");
+				}else if(rando <= 10 && rando >= 5){
+					c.load("bigBoy");
+				}
+				else{
+					c.load("normal");
+				}
+			}
+			
+		});
+	}
+	function fireCannons(delta){
+		var cannon = this.cannons[this.currentCannon];
+		var count = 0;
+		if(Date.now() - this.waitForNextFire > 2000){
+			while(!cannon.loaded && count < this.cannons.length){
+				this.currentCannon = (this.currentCannon+1) % this.cannons.length;
+				cannon = this.cannons[this.currentCannon];
+				count++;
+			}
+			if(count < this.cannons.length){
+				cannon.fire();
+			}
+			
+			this.currentCannon = (this.currentCannon+1) % this.cannons.length;
+			this.waitForNextFire = Date.now();
+		}
+	}
 	function init(){
 		this.currentCannon = 0;
 		this.waitForNextFire = Date.now();

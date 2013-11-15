@@ -67,7 +67,6 @@ define(["head-on", "constants", "entity", "shield"], function($h, constants, ent
 	}
 	function init(){
 		this.image = $h.images("dudeLeanRight");
-		console.log($h.images)
 		this.width = this.image.width;
 		this.height = this.image.height;
 	}
