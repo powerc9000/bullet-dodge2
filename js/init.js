@@ -51,6 +51,38 @@ define(["head-on", "player", "ship"],function($h, player, ship){
 		{
 			name:"bigBoy2",
 			src:"img/big_boy_color_2.png"
+		},
+		{
+			name:"exp1",
+			src:"img/exp_1.png"
+		},
+		{
+			name:"exp2",
+			src:"img/exp_2.png"
+		},
+		{
+			name:"exp3",
+			src:"img/exp_3.png"
+		},
+		{
+			name:"exp4",
+			src:"img/exp_4.png"
+		},
+		{
+			name:"exp5",
+			src:"img/exp_5.png"
+		},
+		{
+			name:"exp6",
+			src:"img/exp_6.png"
+		},
+		{
+			name:"exp7",
+			src:"img/exp_7.png"
+		},
+		{
+			name:"exp8",
+			src:"img/exp_8.png"
 		}
 		], false, function(){
 			player.init();

@@ -20,7 +20,7 @@ define(["head-on", "seekerBullet", "big-boyBullet", "normalBullet", "entity"], f
 			explode: explodeBullet,
 			bullets: bullets,
 			render: render,
-			explosionLength: 1000
+			explosionLength: 200
 		};
 		bulletProto = $h.entity(bulletProto, entity);
 	return {
@@ -66,10 +66,10 @@ define(["head-on", "seekerBullet", "big-boyBullet", "normalBullet", "entity"], f
 	function explodeBullet(){
 
 		var i = 0;
-		var iterations = this.explosionIterations || 50
+		var iterations = this.explosionIterations || 8
 		var interval;
 		var that = this;
-		var speed = this.explosionLength / iterations;
+		var speed = Math.ceil(this.explosionLength / iterations);
 		if(this.exploding){
 			return;
 		}
@@ -91,11 +91,13 @@ define(["head-on", "seekerBullet", "big-boyBullet", "normalBullet", "entity"], f
 		}, speed)
 	}
 	function render(canvas){
+		var image;
 		if(!this.exploding){
 			canvas.drawImageRotated(this.image, this.angle *180/Math.PI+180, this.position.x, this.position.y);
 		}
 		else{
-			canvas.drawCircle(this.position.x, this.position.y, this.iteration , "transparent", {color:"red", width:"2px"})
+			image = $h.images("exp"+this.iteration);
+			canvas.drawImage(image, this.midPoint.x- image.width/2, this.midPoint.y - image.height/2);
 		}
 		
 	}
