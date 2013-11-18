@@ -21,7 +21,7 @@ define(["head-on", "bullets", "entity"], function($h, bullets, entity){
 			localPosition:local,
 			position: position,
 			loadTime:loadTime, 
-			sound: new Audio("")
+			sound: new Audio("audio/cannon.ogg")
 		}
 		if(startingLoad){
 			cannon.loaded = true;
@@ -41,7 +41,7 @@ define(["head-on", "bullets", "entity"], function($h, bullets, entity){
 		bullets.create(1, this.barrell, this.position);
 		this.loaded = false;
 		this.loading = false;
-		this.sound.volume = .2;
+		this.sound.volume = .7;
 		this.sound.play();
 	}
 

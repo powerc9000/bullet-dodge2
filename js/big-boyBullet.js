@@ -32,6 +32,9 @@ define(["head-on", "constants"], function($h, c){
 		this.image = $h.images("bigBoy1");
 		this.width = this.image.width;
 		this.height = this.image.height;
+		this.sound = new Audio("audio/bullets/big_boy_countdown.ogg");
+		this.explodeSound = new Audio("audio/bullets/big_boy_explosion.ogg")
+		this.sound.play();
 	}
 
 	function destroy(reason, obj){

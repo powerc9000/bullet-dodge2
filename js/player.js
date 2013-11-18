@@ -75,7 +75,7 @@ define(["head-on", "constants", "entity", "shield", "jetpack"], function($h, con
 		this.width = this.image.width;
 		this.height = this.image.height;
 		this.jetpack.setMaxFuel(100);
-		this.jetpack.setFuel(100);
+		this.jetpack.setFuel(300);
 		this.jetpack.setFuelPerSecond(7);
 		this.jetpack.setRefuelPerSecond(5);
 	}
@@ -90,7 +90,6 @@ define(["head-on", "constants", "entity", "shield", "jetpack"], function($h, con
 
 	function move(delta){
 		if($h.keys.up && this.jetpack.getFuel() > 0){
-			console.log(this.jetpack.getFuel())
 			this.v = this.v.sub(this.ay.mul(delta));
 			this.jetpack.useFuel(delta);
 		}
