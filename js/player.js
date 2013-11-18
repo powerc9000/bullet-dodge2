@@ -35,17 +35,20 @@ define(["head-on", "constants", "entity", "shield", "jetpack"], function($h, con
 	function getHealth(){
 		return health
 	}
+
 	function setHealth(h){
 		health = h;
 	}
+
 	function getMaxHealth(){
 		return maxHealth;
 	}
+
 	function setMaxHealth(h){
 		health = h * (health/maxHealth);
 		maxHealth = h;
-
 	}
+
 	function updatePlayer(delta){
 		var correction;
 		var that = this;
@@ -66,17 +69,17 @@ define(["head-on", "constants", "entity", "shield", "jetpack"], function($h, con
 			}
 		})
 	}
+
 	function init(){
 		this.image = $h.images("dudeLeanRight");
 		this.width = this.image.width;
 		this.height = this.image.height;
 		this.jetpack.setMaxFuel(100);
-		this.jetpack.setFuel(100);
+		this.jetpack.setFuel(300);
 		this.jetpack.setFuelPerSecond(7);
 		this.jetpack.setRefuelPerSecond(5);
-
-
 	}
+
 	function removePowerup(p, idx){
 		switch(p.type){
 			case "knockback":
@@ -87,7 +90,6 @@ define(["head-on", "constants", "entity", "shield", "jetpack"], function($h, con
 
 	function move(delta){
 		if($h.keys.up && this.jetpack.getFuel() > 0){
-			console.log(this.jetpack.getFuel())
 			this.v = this.v.sub(this.ay.mul(delta));
 			this.jetpack.useFuel(delta);
 		}
@@ -138,7 +140,6 @@ define(["head-on", "constants", "entity", "shield", "jetpack"], function($h, con
 		this.v = this.v.add(constants.gravity.mul(delta));
 	}
 
-
 	function keepInBounds(delta){
 		if(this.position.y >= $h.map.height - this.height){
 			this.v.x *= Math.pow(.2, delta)
@@ -179,6 +180,7 @@ define(["head-on", "constants", "entity", "shield", "jetpack"], function($h, con
 			this.position = this.position.sub($h.Vector(correction.normal.x, correction.normal.y).mul(correction.overlap));
 		}
 	}
+
 	function bulletCollision(bullet){
 		var angle;
 		var knockback;
@@ -202,12 +204,14 @@ define(["head-on", "constants", "entity", "shield", "jetpack"], function($h, con
 		}
 		
 	}
+
 	function powerup(p){
 		if(p.type === "knockback"){
 			this.noKnockback = true;
 			this.powerups.push(p);
 		}
 	}
+	
 	function renderPlayer(canvas){
 		var color;
 		canvas.drawImage(this.image, this.position.x, this.position.y);

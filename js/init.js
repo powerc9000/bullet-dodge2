@@ -87,6 +87,7 @@ define(["head-on", "player", "ship"],function($h, player, ship){
 		], false, function(){
 			player.init();
 			$h.ship.init();
+			document.querySelectorAll(".loading")[0].style.display = "none"
 		});
 		$h.gameState = {};
 		$h.gameState.spawnBullet = true;

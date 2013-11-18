@@ -6,5 +6,4 @@ require(["head-on","update", "render", "keys", "init"],function($h, update, rend
 	$h.update(update);
 	$h.render(render(canvases));
 	$h.run();
-
 });
