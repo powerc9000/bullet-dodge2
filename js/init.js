@@ -23,6 +23,7 @@ define(["head-on", "player", "ship", "keys", "bullets"],function($h, player, shi
 		$h.startGameButton = $h.entity({
 			width: 200,
 			height: 100,
+			angle:0,
 			text: "Start Game",
 			position: $h.Vector($h.map.width/2 - 100, $h.map.height/2 - 50),
 			render: function(canvas){
@@ -47,7 +48,7 @@ define(["head-on", "player", "ship", "keys", "bullets"],function($h, player, shi
 			init: function(){
 				var that = this;
 				$h.events.listen("click", function(mouse){
-					console.log("hey")
+					console.log(mouse)
 					var mouse = {
 						width:2,
 						height:2,
