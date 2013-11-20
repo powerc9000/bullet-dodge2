@@ -1,4 +1,4 @@
-define(["bullets", "hud", "powerups"], function(bullets, hud, powerups){
+define(["hud", "powerups"], function(hud, powerups){
 	return function(canvases){
 		var canvas = canvases.canvas;
 		var hudCanvas = canvases.hud;
@@ -9,12 +9,17 @@ define(["bullets", "hud", "powerups"], function(bullets, hud, powerups){
 			this.player.render(canvas);
 			
 			this.ship.render(canvas);
-			bullets.render(canvas);
+			this.bullets.render(canvas);
 			canvas.drawRect(canvas.width, 10, 0,canvas.height-10, "blue");
 			hud.render(hudCanvas);
+			this.startGameButton.render(canvas);
 			if(this.isPaused()){
 				canvas.drawText("Game Paused", this.map.width/2, this.map.height/2, "30px", "black", "center", "middle")
 				canvas.drawText("(Press p to resume)", this.map.width/2, this.map.height/2+40, "30px", "black", "center", "middle")
+			}
+			if(this.game.starting){
+				canvas.drawText("Get Ready!!!", this.map.width/2, this.map.height/2, "30px", "black", "center", "middle")
+				canvas.drawText(Math.ceil(this.game.startTimeLeft/1000), this.map.width/2, this.map.height/2+40, "30px", "black", "center", "middle")
 			}
 		}
 		return render;

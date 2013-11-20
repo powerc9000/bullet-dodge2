@@ -21,13 +21,18 @@ define(["head-on", "bullets", "entity"], function($h, bullets, entity){
 			localPosition:local,
 			position: position,
 			loadTime:loadTime, 
-			sound: new Audio("audio/cannon.ogg")
+			sound: new Howl({
+				urls: ["audio/cannon.ogg"],
+				volume: .7,
+				buffer:true,
+			})
 		}
 		if(startingLoad){
 			cannon.loaded = true;
 			cannon.barrell = startingLoad;
 		}
-		return $h.entity(cannon, entity);
+		cannon = $h.entity(cannon, entity);
+		return cannon;
 	}
 	function update(delta){
 		var prevAngle = this.angle;

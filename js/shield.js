@@ -29,7 +29,7 @@ define(["head-on"], function($h){
 
 	function setMaxHealth(amt){
 		maxHealth = amt;
-		health = amt * (health/maxhealth);
+		health = amt * (health/maxHealth);
 	}
 
 	function getMaxHealth(){

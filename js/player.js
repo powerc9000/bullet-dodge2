@@ -3,13 +3,6 @@ define(["head-on", "constants", "entity", "shield", "jetpack"], function($h, con
 	var health = 100,
 		maxHealth = 100,
 		player = $h.entity({
-			position: $h.Vector(0,0),
-			v: $h.Vector(0,0),
-			angle:0,
-			width:50,
-			height:50,
-			ax: $h.Vector(200,0),
-			ay: $h.Vector(0, 400),
 			getHealth: getHealth,
 			setHealth: setHealth,
 			getMaxHealth: getMaxHealth,
@@ -74,10 +67,18 @@ define(["head-on", "constants", "entity", "shield", "jetpack"], function($h, con
 		this.image = $h.images("dudeLeanRight");
 		this.width = this.image.width;
 		this.height = this.image.height;
+		this.setHealth(this.getMaxHealth());
 		this.jetpack.setMaxFuel(100);
 		this.jetpack.setFuel(300);
 		this.jetpack.setFuelPerSecond(7);
 		this.jetpack.setRefuelPerSecond(5);
+		this.shield.setMaxHealth(5);
+		this.shield.setHealth(5);
+		this.position= $h.Vector(0,0);
+		this.v = $h.Vector(0,0);
+		this.angle = 0;
+		this.ax = $h.Vector(200,0);
+		this.ay = $h.Vector(0, 400);
 	}
 
 	function removePowerup(p, idx){
@@ -202,7 +203,10 @@ define(["head-on", "constants", "entity", "shield", "jetpack"], function($h, con
 			this.image = $h.images("dudeHit");
 			this.hitTime = Date.now();
 		}
-		
+		if(health <= 0.9){
+			$h.game.gameOver = true;
+			$h.game.started = false;
+		}
 	}
 
 	function powerup(p){

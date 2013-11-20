@@ -1,4 +1,10 @@
-define(["head-on", "player", "ship"],function($h, player, ship){
+define(["head-on", "player", "ship", "keys", "bullets"],function($h, player, ship, keys, bullets){
+	window.addEventListener("blur", function(){
+		if($h.game.started){
+			$h.pause();
+		}
+			
+	});
 	return function(width, height){
 		$h.canvas.create("main", width, height);
 		$h.canvas.create("hud", width, 200);
@@ -7,14 +13,57 @@ define(["head-on", "player", "ship"],function($h, player, ship){
 		$h.map = {};
 		$h.player = player
 		$h.ship = ship;
-		
+		$h.bullets = bullets;
 		$h.map.width = width;
 		$h.map.height = height -10 ;
 		$h.canvas("main").append("body");
 		$h.canvas("hud").append("body");
 		// $h.canvas("background").append("body");
 		// $h.canvas("background").cavanas.style.position ="aboslute";
-
+		$h.startGameButton = $h.entity({
+			width: 200,
+			height: 100,
+			text: "Start Game",
+			position: $h.Vector($h.map.width/2 - 100, $h.map.height/2 - 50),
+			render: function(canvas){
+				if(!$h.game.started && !$h.game.gameOver && !$h.game.starting){
+					canvas.drawRect(this.width, this.height, this.position.x, this.position.y, "blue");
+					canvas.drawText("Start Game", this.position.x + this.width/2, this.position.y + this.height/2, "20px", "white", "center", "middle");
+				}
+				if(!$h.game.started && $h.game.gameOver && !$h.game.starting){
+					canvas.drawRect(this.width, this.height, this.position.x, this.position.y, "blue");
+					canvas.drawText("Retry", this.position.x + this.width/2, this.position.y + this.height/2, "20px", "white", "center", "middle");
+				}
+			},
+			click: function(){
+				if(!$h.game.gameOver && !$h.game.started && !$h.game.starting){
+					$h.game.starting = true;
+					$h.game.startTimeLeft = 5000;
+				}
+				if($h.game.gameOver && !$h.game.started && !$h.game.starting){
+					$h.events.trigger("reset");
+				}
+			},
+			init: function(){
+				var that = this;
+				$h.events.listen("click", function(mouse){
+					console.log("hey")
+					var mouse = {
+						width:2,
+						height:2,
+						angle:0,
+						position:$h.Vector(mouse.x, mouse.y)
+					}
+					if($h.collides(mouse, that)){
+						that.click();
+					}
+				})
+			}
+		});
+		$h.startGameButton.init();
+		$h.game = {};
+		$h.game.started = false;
+		$h.game.gameOver = false;
 		$h.loadImages([
 		{
 			name:"normalBullet", 
@@ -87,10 +136,9 @@ define(["head-on", "player", "ship"],function($h, player, ship){
 		], false, function(){
 			player.init();
 			$h.ship.init();
-			document.querySelectorAll(".loading")[0].style.display = "none"
+			document.querySelectorAll(".loading")[0].style.display = "none";
 		});
-		$h.gameState = {};
-		$h.gameState.spawnBullet = true;
+		keys($h.canvas("main").canvas.canvas);
 		return{
 			canvas: $h.canvas("main"),
 			hud: $h.canvas("hud"),

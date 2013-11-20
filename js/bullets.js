@@ -28,7 +28,10 @@ define(["head-on", "seekerBullet", "big-boyBullet", "normalBullet", "entity"], f
 		create: createBullets,
 		render: renderBullets,
 		count: function(){return bullets.length},
-		created: function(){return count}
+		created: function(){return count},
+		reset: function(){
+			bullets.length = 0;
+		}
 	}
 	
 	function updateBullets(delta){

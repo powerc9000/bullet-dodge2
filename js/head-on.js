@@ -293,8 +293,10 @@ define(function(){
                  
                 pause: function(){
                 	this.paused = true;
+                	this.events.trigger("pause");
                 },
                 unpause: function(){
+                	this.events.trigger("unpause");
                 	this.paused = false;
                 },
                 isPaused: function(){
@@ -353,9 +355,7 @@ define(function(){
                     modifier = now - then;
                    	this.trueFps = 1/(modifier/1000);
                     this._ticks+=1;
-                    if(!this.paused){
-                    	this._update(modifier, this._ticks);
-                    }
+                    this._update(modifier, this._ticks);
                     this._render(modifier, this._ticks);
                     this.gameTime += modifier;
 

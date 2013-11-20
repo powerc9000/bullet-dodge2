@@ -1,13 +1,28 @@
-define(["bullets", "hud", "powerups"], function(bullets, hud, powerups){
+define(["hud", "powerups"], function(hud, powerups){
 	var that;
 	return update;
 	function update(delta){
-		that = this;
-		delta = delta/1000;
-		this.player.update(delta);
-		bullets.update(delta);
-		powerups.update(delta);
-		this.ship.update(delta)
-		hud.update();
+		if(this.game.started){
+			if(!this.isPaused()){
+				that = this;
+				delta = delta/1000;
+				this.player.update(delta);
+				this.bullets.update(delta);
+				powerups.update(delta);
+				this.ship.update(delta)
+				hud.update();
+			}
+		}
+		else{
+			if(this.game.starting){
+				if(this.game.startTimeLeft > 0){
+					this.game.startTimeLeft -= delta;
+				}else{
+					this.game.started = true;
+					this.game.starting = false;
+				}
+			}
+		}
+		
 	}
 });
