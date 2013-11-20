@@ -47,7 +47,7 @@ define(function(){
                         if(e){
                             l = e.length;
                             for(i = 0; i < l; i++){
-                                e[i].call(headOn, args);
+                                e[i].apply(headOn, args);
                             }
                         }
                         
