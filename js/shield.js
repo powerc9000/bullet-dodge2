@@ -11,7 +11,8 @@ define(["head-on"], function($h){
 		damaged: false,
 		rechargeTimeout: 2000,
 		update:update,
-		rechargeRate: 20
+		rechargeRate: 20,
+		lastHit: 0
 	}
 
 	function setHealth(amt){

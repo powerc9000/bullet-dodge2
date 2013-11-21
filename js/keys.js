@@ -25,6 +25,10 @@ define(["head-on"], function($h){
 		canvas.addEventListener("click", function(e){
 			var bounds = canvas.getBoundingClientRect();
 			$h.events.trigger("click", {x:e.pageX - bounds.left, y: e.pageY - bounds.top})
+		});
+		canvas.addEventListener("mousemove", function(e){
+			var bounds = canvas.getBoundingClientRect();
+			$h.events.trigger("mousemove", {x:e.pageX - bounds.left, y: e.pageY - bounds.top})
 		})
 	}
 	
