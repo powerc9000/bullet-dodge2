@@ -20,7 +20,6 @@ define(["head-on", "constants", "entity", "shield", "jetpack"], function($h, con
 			removePowerup: removePowerup,
 			init: init,
 			setImage: setImage,
-			jetpack: jetpack
 		}, entity);
 	return player;
 
@@ -64,16 +63,17 @@ define(["head-on", "constants", "entity", "shield", "jetpack"], function($h, con
 	}
 
 	function init(){
-		this.image = $h.images("dudeLeanRight");
+		this.jetpack = jetpack(this);
+		this.image = $h.images("dudeSitRight");
 		this.width = this.image.width;
 		this.height = this.image.height;
 		this.setHealth(this.getMaxHealth());
 		this.jetpack.setMaxFuel(100);
-		this.jetpack.setFuel(300);
+		this.jetpack.setFuel(10);
 		this.jetpack.setFuelPerSecond(7);
-		this.jetpack.setRefuelPerSecond(5);
-		this.shield.setMaxHealth(5);
-		this.shield.setHealth(5);
+		this.jetpack.setRefuelPerSecond(40);
+		this.shield.setMaxHealth(50);
+		this.shield.setHealth(50);
 		this.position= $h.Vector(0,0);
 		this.v = $h.Vector(0,0);
 		this.angle = 0;
@@ -124,15 +124,35 @@ define(["head-on", "constants", "entity", "shield", "jetpack"], function($h, con
 	}
 
 	function setImage(){
+
 		if(this.hitTime){
 			if(Date.now() - this.hitTime > 500){
 				this.hitTime = false;
 			}
 		}else if(this.v.x > 0){
 			this.image = $h.images("dudeLeanRight");
+			this.facing = "right";
 		}
 		else if(this.v.x < 0){
 			this.image = $h.images("dudeLeanLeft");
+			this.facing = "left";
+		}else if(this.v.x == 0){
+			if(this.facing === "left"){
+				this.image = $h.images("dudeSitLeft");
+			}else{
+				this.image = $h.images("dudeSitRight");
+			}
+		}
+		if(this.jetpack.getFuel() <= 0 || this.jetpack.getFuel() <= this.jetpack.getMaxFuel/10 && this.ranOutOfFuel){
+			this.ranOutOfFuel = true;
+			if(this.facing === "left"){
+				this.image = $h.images("outOfFuelLeft");
+			}else{
+				this.image = $h.images("outOfFuelRight");
+			}
+		}
+		else{
+			this.ranOutOfFuel = false;
 		}
 		this.width = this.image.width;
 		this.height = this.image.height;
@@ -150,11 +170,9 @@ define(["head-on", "constants", "entity", "shield", "jetpack"], function($h, con
 
 		if(this.position.y >= $h.map.height - this.height && this.v.y >= 0){
 			this.position.y = $h.map.height - this.height;
-			this.jetpack.setRefuelPerSecond(20);
 			this.v.y = 0;
 			this.onGround = true;
 		}else{
-			this.jetpack.setRefuelPerSecond(5);
 			this.onGround = false;
 		} 
 
