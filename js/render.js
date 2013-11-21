@@ -10,7 +10,7 @@ define(["hud", "powerups"], function(hud, powerups){
 			
 			this.ship.render(canvas);
 			this.bullets.render(canvas);
-			canvas.drawRect(canvas.width, 10, 0,canvas.height-10, "blue");
+			canvas.drawImage(this.images("rooftop"),0,this.map.height);
 			hud.render(hudCanvas);
 			this.startGameButton.render(canvas);
 			if(this.isPaused()){

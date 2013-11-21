@@ -508,7 +508,13 @@ define(function(){
             },
 
             append: function(element){
-                document[element].appendChild(this.canvas.canvas);
+            	element = document.querySelector(element);
+            	if(element){
+            		element.appendChild(this.canvas.canvas);
+            	}
+                else{
+                	document.body.appendChild(this.canvas.canvas);
+                }
                 return this;
             }
         }
