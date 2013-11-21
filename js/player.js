@@ -1,6 +1,6 @@
 define(["head-on", "constants", "entity", "shield", "jetpack"], function($h, constants, entity, shield, jetpack){
 	
-	var health = 100,
+	var health = 1,
 		maxHealth = 100,
 		player = $h.entity({
 			getHealth: getHealth,
@@ -73,8 +73,8 @@ define(["head-on", "constants", "entity", "shield", "jetpack"], function($h, con
 		this.jetpack.setFuelPerSecond(7);
 		this.jetpack.setRefuelPerSecond(40);
 		this.shield.setMaxHealth(50);
-		this.shield.setHealth(50);
-		this.position= $h.Vector(0,0);
+		this.shield.setHealth(1);
+		this.position= $h.Vector(30,$h.map.height - this.height);
 		this.v = $h.Vector(0,0);
 		this.angle = 0;
 		this.ax = $h.Vector(200,0);
@@ -222,6 +222,7 @@ define(["head-on", "constants", "entity", "shield", "jetpack"], function($h, con
 			this.hitTime = Date.now();
 		}
 		if(health <= 0.9){
+			$h.startGameButton.activate(true);
 			$h.game.gameOver = true;
 			$h.game.started = false;
 		}
