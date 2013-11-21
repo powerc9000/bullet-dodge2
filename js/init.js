@@ -16,8 +16,8 @@ define(["head-on", "player", "ship", "keys", "bullets", "buttons"],function($h, 
 		$h.bullets = bullets;
 		$h.map.width = width;
 		$h.map.height = height -10 ;
-		$h.canvas("main").append("body");
-		$h.canvas("hud").append("body");
+		$h.canvas("main").append("#game-contain");
+		$h.canvas("hud").append("#game-contain");
 		// $h.canvas("background").append("body");
 		// $h.canvas("background").cavanas.style.position ="aboslute";
 		buttons();
@@ -30,6 +30,10 @@ define(["head-on", "player", "ship", "keys", "bullets", "buttons"],function($h, 
 			name:"normalBullet", 
 			src:"img/normal_bullet_2.png"
 		}, 
+		{
+			name:"rooftop", 
+			src:"img/rooftop.png"
+		},
 		{
 			name:"background",
 			src:"img/background.png"
