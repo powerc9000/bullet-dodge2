@@ -42,16 +42,16 @@ define(["head-on", "entity", "cannon"], function($h, entity, cannon){
 	}
 	function updateCannons(delta){
 		this.cannons.forEach(function(c){
-			var rando = $h.randInt(0,100);
+			var rando = Math.random();
 			c.update(delta);
 			if(!c.loading && !c.loaded){
-				if(rando < 5){
+				if(rando < .1){
 					c.load("seeker");
-				}else if(rando <= 10 && rando >= 5){
+				}else if(rando <= .2 && rando >= .1){
 					c.load("bigBoy");
 				}
 				else{
-					c.load("normal");
+					c.load("seeker");
 				}
 			}
 			

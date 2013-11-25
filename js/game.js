@@ -7,6 +7,7 @@ require(["head-on","update", "render", "init"],function($h, update, render, init
 		$h.game.starting = true;
 		$h.game.gameOver = false;
 		$h.game.startTimeLeft = 5000;
+		$h.score.reset();
 	})
 	$h.update(update);
 	$h.render(render(canvases));

@@ -15,7 +15,10 @@ define(["head-on"], function($h, ba){
 		if(!this.exploding){
 			if(Date.now() - this.created > 500){
 				angleDelta = Math.atan2($h.player.midPoint.y - this.position.y, $h.player.midPoint.x - this.position.x) - this.angle;
-				this.angle += angleDelta * .05
+				if(Math.abs(angleDelta) > Math.PI){
+					angleDelta = angleDelta - sign(angleDelta)*Math.PI*2;
+				}
+				this.angle += angleDelta * .04;
 				this.position.x += this.speed * delta * Math.cos(this.angle);
 				this.position.y += this.speed * delta * Math.sin(this.angle);
 			}
@@ -32,6 +35,9 @@ define(["head-on"], function($h, ba){
 			}
 		}
 		
+	}
+	function sign(number){
+		return number?number<0?-1:1:0
 	}
 	function init(position){
 		var that = this;
