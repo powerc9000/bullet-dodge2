@@ -60,7 +60,7 @@ define(["head-on", "entity", "cannon"], function($h, entity, cannon){
 	function fireCannons(delta){
 		var cannon = this.cannons[this.currentCannon];
 		var count = 0;
-		if(Date.now() - this.waitForNextFire > 2000){
+		if(Date.now() - this.waitForNextFire > 1500){
 			while(!cannon.loaded && count < this.cannons.length){
 				this.currentCannon = (this.currentCannon+1) % this.cannons.length;
 				cannon = this.cannons[this.currentCannon];

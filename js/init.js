@@ -1,4 +1,4 @@
-define(["head-on", "player", "ship", "keys", "bullets", "buttons"],function($h, player, ship, keys, bullets, buttons){
+define(["head-on", "player", "ship", "keys", "bullets", "buttons", "score"],function($h, player, ship, keys, bullets, buttons, score){
 	window.addEventListener("blur", function(){
 		if($h.game.started){
 			$h.pause();
@@ -18,6 +18,7 @@ define(["head-on", "player", "ship", "keys", "bullets", "buttons"],function($h, 
 		$h.map.height = height -10 ;
 		$h.canvas("main").append("#game-contain");
 		$h.canvas("hud").append("#game-contain");
+		$h.score = score;
 		// $h.canvas("background").append("body");
 		// $h.canvas("background").cavanas.style.position ="aboslute";
 		buttons();
@@ -117,6 +118,7 @@ define(["head-on", "player", "ship", "keys", "bullets", "buttons"],function($h, 
 		], false, function(){
 			player.init();
 			$h.ship.init();
+			score.init();
 			document.querySelectorAll(".loading")[0].style.display = "none";
 		});
 		keys($h.canvas("main").canvas.canvas);

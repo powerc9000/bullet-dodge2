@@ -9,7 +9,7 @@ define(["head-on"], function($h){
 		getMaxHealth: getMaxHealth,
 		damage: damage,
 		damaged: false,
-		rechargeTimeout: 2000,
+		rechargeTimeout: 3000,
 		update:update,
 		rechargeRate: 20,
 		lastHit: 0

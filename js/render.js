@@ -13,6 +13,7 @@ define(["hud", "powerups"], function(hud, powerups){
 			canvas.drawImage(this.images("rooftop"),0,this.map.height);
 			hud.render(hudCanvas);
 			this.startGameButton.render(canvas);
+			this.score.render(canvas);
 			if(this.isPaused()){
 				canvas.drawText("Game Paused", this.map.width/2, this.map.height/2, "30px", "black", "center", "middle")
 				canvas.drawText("(Press p to resume)", this.map.width/2, this.map.height/2+40, "30px", "black", "center", "middle")

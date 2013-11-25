@@ -22,7 +22,7 @@ define(["head-on"], function($h){
 				if(!$h.game.gameOver && !$h.game.started && !$h.game.starting){
 					this.active = false;
 					$h.game.starting = true;
-					$h.game.startTimeLeft = 5000;
+					$h.game.startTimeLeft = 2000;
 				}
 				if($h.game.gameOver && !$h.game.started && !$h.game.starting){
 					this.active = false;
