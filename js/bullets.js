@@ -38,6 +38,7 @@ define(["head-on", "seekerBullet", "big-boyBullet", "normalBullet", "entity"], f
 		bullets.forEach(function(b,i){
 			if(b.destroyed){
 				bullets.splice(i,1);
+				$h.events.trigger("bulletDestroyed");
 			}
 			b.update(delta);
 			bullets.some(function(bb, idx){
@@ -78,6 +79,7 @@ define(["head-on", "seekerBullet", "big-boyBullet", "normalBullet", "entity"], f
 		}
 		this.exploding = true;
 		this.explodeSound && this.explodeSound.play();
+		this.sound && this.sound.pause();
 		interval = setInterval(function(){
 			if(!$h.isPaused()){
 				if(i > iterations){

@@ -3,6 +3,7 @@ define(["head-on", "constants", "entity", "shield", "jetpack"], function($h, con
 	var health = 1,
 		maxHealth = 100,
 		player = $h.entity({
+			hitCount:0,
 			getHealth: getHealth,
 			setHealth: setHealth,
 			getMaxHealth: getMaxHealth,
@@ -68,8 +69,8 @@ define(["head-on", "constants", "entity", "shield", "jetpack"], function($h, con
 		this.width = this.image.width;
 		this.height = this.image.height;
 		this.setHealth(this.getMaxHealth());
-		this.jetpack.setMaxFuel(100);
-		this.jetpack.setFuel(10);
+		this.jetpack.setMaxFuel(300);
+		this.jetpack.setFuel(300);
 		this.jetpack.setFuelPerSecond(7);
 		this.jetpack.setRefuelPerSecond(40);
 		this.shield.setMaxHealth(50);
@@ -79,6 +80,10 @@ define(["head-on", "constants", "entity", "shield", "jetpack"], function($h, con
 		this.angle = 0;
 		this.ax = $h.Vector(200,0);
 		this.ay = $h.Vector(0, 400);
+		this.shieldHitSound = new Audio("audio/shield_hit.ogg");
+		this.shieldHitSound.volume = .5;
+		this.gruntSound = new Audio("audio/grunt.ogg");
+		this.gruntSound.volume = .5;
 	}
 
 	function removePowerup(p, idx){
@@ -203,6 +208,7 @@ define(["head-on", "constants", "entity", "shield", "jetpack"], function($h, con
 	function bulletCollision(bullet){
 		var angle;
 		var knockback;
+		var prevHealth = health;
 		angle = this.position.sub(bullet.position).normalize();
 		if(bullet.type === "normal"){
 			knockback = 150;
@@ -226,6 +232,16 @@ define(["head-on", "constants", "entity", "shield", "jetpack"], function($h, con
 			$h.game.gameOver = true;
 			$h.game.started = false;
 		}
+		if(health === prevHealth){
+			this.shieldHitSound.currentTime = 0;
+			this.shieldHitSound.play();
+		}else{
+			this.gruntSound.currentTime = 0;
+			this.gruntSound.play();
+		}
+		
+		this.hitCount += 1;
+		$h.events.trigger("playerHit");
 	}
 
 	function powerup(p){
