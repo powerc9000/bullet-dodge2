@@ -8,7 +8,7 @@ define(["head-on", "constants"], function($h, c){
 		width: 100,
 		height: 50,
 		explosionIterations:200,
-		speed: 100,
+		speed: 150,
 		TTL: 5*1000,
 		explosionLength: 200
 	}
