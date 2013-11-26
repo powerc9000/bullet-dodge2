@@ -18,7 +18,7 @@ define(["head-on"], function($h, ba){
 				if(Math.abs(angleDelta) > Math.PI){
 					angleDelta = angleDelta - sign(angleDelta)*Math.PI*2;
 				}
-				this.angle += angleDelta * .04;
+				this.angle += angleDelta * .035;
 				this.position.x += this.speed * delta * Math.cos(this.angle);
 				this.position.y += this.speed * delta * Math.sin(this.angle);
 			}

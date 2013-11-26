@@ -48,6 +48,8 @@ define(["head-on", "bullets", "entity"], function($h, bullets, entity){
 		this.loading = false;
 		this.sound.volume = .7;
 		this.sound.play();
+		this.justFired = true;
+		this.smokeImg = 1;
 	}
 
 	function load(type){
@@ -68,7 +70,26 @@ define(["head-on", "bullets", "entity"], function($h, bullets, entity){
 	}
 
 	function render(canvas){
-		canvas.drawRect(this.width, this.height, this.position.x, this.position.y, "black", false, this.angle);
+		var img;
+		if(this.justFired){
+			this.justFired = false;
+			this.smokeAnimation = true;
+			this.animationPos = {};
+			this.animationPos.x = this.position.x;
+			this.animationPos.y = this.position.y;
+			this.smokeInterval = setInterval(function(){
+				if(this.smokeImg > 3){
+					clearInterval(this.smokeInterval);
+					this.smokeAnimation = false;
+				}else{
+					this.smokeImg += 1
+				}
+			}.bind(this), 100)
+		}
+		if(this.smokeAnimation){
+			img = $h.images("cannonSmoke"+this.smokeImg)
+			canvas.drawImage(img, this.animationPos.x - img.width, this.animationPos.y - this.height);
+		}
 	}
 });
 

@@ -114,6 +114,18 @@ define(["head-on", "player", "ship", "keys", "bullets", "buttons", "score"],func
 		{
 			name:"exp8",
 			src:"img/exp_8.png"
+		},
+		{
+			name:"cannonSmoke1",
+			src:"img/cannon_smoke_1.png"
+		}, 
+		{
+			name:"cannonSmoke2",
+			src:"img/cannon_smoke_2.png"
+		}, 
+		{
+			name:"cannonSmoke3",
+			src:"img/cannon_smoke_3.png"
 		}
 		], false, function(){
 			player.init();
