@@ -4,7 +4,7 @@ define(["hud", "powerups"], function(hud, powerups){
 		var hudCanvas = canvases.hud;
 		function render(update, frames){
 			canvas.drawRect(this.map.width, this.map.height, 0,0, "#66ccff");
-			canvas.drawImage(this.images("background"), 0,0);
+			canvas.drawImage(this.images("background"), 0,this.map.height - this.images("background").height);
 
 			powerups.render(canvas);
 			this.player.render(canvas);
