@@ -36,22 +36,22 @@ define(["head-on", "entity", "cannon"], function($h, entity, cannon){
 
 	function render(canvas){
 		canvas.drawImage(this.image, this.position.x, this.position.y);
-		// this.cannons.forEach(function(c){
-		// 	c.render(canvas);
-		// })
+		this.cannons.forEach(function(c){
+			c.render(canvas);
+		})
 	}
 	function updateCannons(delta){
 		this.cannons.forEach(function(c){
 			var rando = Math.random();
 			c.update(delta);
 			if(!c.loading && !c.loaded){
-				if(rando < .1){
+				if(rando < .05){
 					c.load("seeker");
-				}else if(rando <= .2 && rando >= .1){
+				}else if(rando <= .1 && rando >= .05){
 					c.load("bigBoy");
 				}
 				else{
-					c.load("seeker");
+					c.load("normal");
 				}
 			}
 			
@@ -77,7 +77,7 @@ define(["head-on", "entity", "cannon"], function($h, entity, cannon){
 	function init(){
 		this.currentCannon = 0;
 		this.waitForNextFire = Date.now();
-		this.position = $h.Vector(600, 0);
+		this.position = $h.Vector(800, 0);
 		this.image = $h.images("ship");
 		this.width = this.image.width;
 		this.height = this.image.height;

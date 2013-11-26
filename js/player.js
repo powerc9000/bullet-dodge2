@@ -72,7 +72,7 @@ define(["head-on", "constants", "entity", "shield", "jetpack"], function($h, con
 		this.jetpack.setMaxFuel(300);
 		this.jetpack.setFuel(300);
 		this.jetpack.setFuelPerSecond(7);
-		this.jetpack.setRefuelPerSecond(40);
+		this.jetpack.setRefuelPerSecond(70);
 		this.shield.setMaxHealth(50);
 		this.shield.setHealth(1);
 		this.position= $h.Vector(30,$h.map.height - this.height);
