@@ -21,6 +21,7 @@ define(["head-on", "constants", "entity", "shield", "jetpack"], function($h, con
 			removePowerup: removePowerup,
 			init: init,
 			setImage: setImage,
+			speedLimit: speedLimit,
 		}, entity);
 	return player;
 
@@ -72,14 +73,15 @@ define(["head-on", "constants", "entity", "shield", "jetpack"], function($h, con
 		this.jetpack.setMaxFuel(300);
 		this.jetpack.setFuel(300);
 		this.jetpack.setFuelPerSecond(7);
-		this.jetpack.setRefuelPerSecond(70);
+		this.jetpack.setRefuelPerSecond(150);
 		this.shield.setMaxHealth(50);
 		this.shield.setHealth(1);
 		this.position= $h.Vector(30,$h.map.height - this.height);
 		this.v = $h.Vector(0,0);
 		this.angle = 0;
-		this.ax = $h.Vector(200,0);
+		this.ax = $h.Vector(400,0);
 		this.ay = $h.Vector(0, 400);
+		this.maxV = 400;
 		this.shieldHitSound = new Audio("audio/shield_hit.ogg");
 		this.shieldHitSound.volume = .5;
 		this.gruntSound = new Audio("audio/grunt.ogg");
@@ -93,7 +95,14 @@ define(["head-on", "constants", "entity", "shield", "jetpack"], function($h, con
 				this.powerups.splice(idx,1);
 		}
 	}
-
+	function speedLimit(){
+		if(this.v.x > this.maxV){
+			this.v.x = this.maxV;
+		}
+		if(this.v.y > this.maxV){
+			this.v.y = this.maxV;
+		}
+	}
 	function move(delta){
 		if($h.keys.up && this.jetpack.getFuel() > 0){
 			this.v = this.v.sub(this.ay.mul(delta));
@@ -126,6 +135,7 @@ define(["head-on", "constants", "entity", "shield", "jetpack"], function($h, con
 			}
 			
 		}
+		this.speedLimit();
 	}
 
 	function setImage(){
