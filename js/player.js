@@ -17,11 +17,14 @@ define(["head-on", "constants", "entity", "shield", "jetpack"], function($h, con
 			gravity: gravity,
 			shield: shield,
 			powerup: powerup,
-			powerups: [],
+			powerups: {
+				knockback:{}
+			},
 			removePowerup: removePowerup,
 			init: init,
 			setImage: setImage,
 			speedLimit: speedLimit,
+			updatePowerups: updatePowerups
 		}, entity);
 	return player;
 
@@ -61,14 +64,16 @@ define(["head-on", "constants", "entity", "shield", "jetpack"], function($h, con
 		this.setImage();
 		this.calcMidPoint();
 		this.shield.update(delta);
-		this.powerups.forEach(function(p, i){
-			p.effectLength -= delta * 1000;
-			if(p.effectLength <= 0){
-				that.removePowerup(p, i);
-			}
-		})
+		this.updatePowerups(delta);
 	}
-
+	function updatePowerups(delta){
+		if(this.powerups.knockback && this.powerups.knockback.active){
+			this.powerups.knockback.effectLength -= delta * 1000;
+			if(this.powerups.knockback.effectLength <= 0){
+				this.removePowerup(this.powerups.knockback);
+			}
+		}
+	}
 	function init(){
 		this.jetpack = jetpack(this);
 		this.image = $h.images("dudeSitRight");
@@ -96,8 +101,7 @@ define(["head-on", "constants", "entity", "shield", "jetpack"], function($h, con
 	function removePowerup(p, idx){
 		switch(p.type){
 			case "knockback":
-				this.noKnockback = false;
-				this.powerups.splice(idx,1);
+				this.powerups.knockback.active = false;
 		}
 	}
 	function speedLimit(){
@@ -237,7 +241,7 @@ define(["head-on", "constants", "entity", "shield", "jetpack"], function($h, con
 			health -= this.shield.damage(50);
 			knockback = 500;
 		}
-		if(!this.noKnockback){
+		if(!this.powerups.knockback.active){
 			this.v = angle.mul(knockback);
 			this.image = $h.images("dudeHit");
 			this.hitTime = Date.now();
@@ -262,8 +266,8 @@ define(["head-on", "constants", "entity", "shield", "jetpack"], function($h, con
 	function powerup(p){
 		switch(p.type){
 			case "knockback":
-				this.noKnockback = true;
-				this.powerups.push(p);
+				this.powerups.knockback = p;
+				this.powerups.knockback.active = true;
 				break;
 			case "health":
 				this.setHealth(this.getHealth()+50);

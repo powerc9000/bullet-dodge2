@@ -21,7 +21,6 @@ define(["head-on"], function($h){
 				}
 			}
 		});
-		console.log(canvas)
 		canvas.addEventListener("click", function(e){
 			var bounds = canvas.getBoundingClientRect();
 			$h.events.trigger("click", {x:e.pageX - bounds.left, y: e.pageY - bounds.top})
