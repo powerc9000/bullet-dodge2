@@ -14,7 +14,7 @@ define(["head-on"], function($h){
 
 	function update(delta){
 		var that = this;
-		if($h.gameTime - this.lastSpawn > 1000){
+		if($h.gameTime - this.lastSpawn > 10000){
 			this.spawnPowerup();
 			this.lastSpawn = $h.gameTime;
 		}
