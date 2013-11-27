@@ -13,6 +13,9 @@ define(["head-on", "bullets"], function($h, bullets){
 			}.bind(this));
 			$h.events.listen("bulletDestroyed", function(){
 				this.score += 20;
+			}.bind(this));
+			$h.events.listen("powerup", function(){
+				this.score += 20;
 			}.bind(this))
 		},
 		render: function(canvas){

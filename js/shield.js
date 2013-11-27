@@ -2,6 +2,13 @@ define(["head-on"], function($h){
 	"use strict";
 	var health = 50;
 	var maxHealth = 50;
+	var rechargeSound = new Audio("audio/shield_recharge.ogg");
+	var continueFromPaused = false;
+	rechargeSound.volume = .2;
+	$h.events.listen("pause", function(){
+		rechargeSound.pause();
+		continueFromPaused = true;
+	})
 	return{
 		setHealth: setHealth,
 		getHealth: getHealth,
@@ -40,9 +47,7 @@ define(["head-on"], function($h){
 	function damage(dmg){
 		var that = this;
 		var playerDmg;
-		if(this.timeout){
-			clearTimeout(this.timeout);
-		}
+		
 		if(health - dmg < 0){
 			playerDmg = dmg - health;
 			health = 0;
@@ -52,18 +57,28 @@ define(["head-on"], function($h){
 			playerDmg =  0;
 		}
 		this.lastHit = Date.now();
+		rechargeSound.pause();
 		return playerDmg;
 	}
 
 	function update(delta){
 		if(Date.now() - this.lastHit > this.rechargeTimeout){
 			if(health !== maxHealth){
+				if(rechargeSound.paused){
+					if(!continueFromPaused){
+						rechargeSound.currentTime = 0;
+						continueFromPaused = false;
+					}
+					rechargeSound.play();
+				}
 				if(health + (this.rechargeRate * delta) > maxHealth){
 					health = maxHealth;
 				}
 				else{
 					health += this.rechargeRate * delta;
 				}
+			}else{
+				rechargeSound.pause();
 			}
 		}
 	}

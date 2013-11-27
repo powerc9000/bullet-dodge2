@@ -33,7 +33,9 @@ define(["head-on", "constants"], function($h, c){
 		this.width = this.image.width;
 		this.height = this.image.height;
 		this.sound = new Audio("audio/bullets/big_boy_countdown.ogg");
-		this.explodeSound = new Audio("audio/bullets/big_boy_explosion.ogg")
+		this.explodeSound = new Audio("audio/bullets/big_boy_explosion.ogg");
+		this.sound.volume = .3;
+		this.explodeSound.volume = .2;
 		this.sound.play();
 	}
 

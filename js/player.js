@@ -31,7 +31,12 @@ define(["head-on", "constants", "entity", "shield", "jetpack"], function($h, con
 	}
 
 	function setHealth(h){
-		health = h;
+		if(h > maxHealth){
+			health = maxHealth;
+		}
+		else{
+			health = h;
+		}
 	}
 
 	function getMaxHealth(){
@@ -83,7 +88,7 @@ define(["head-on", "constants", "entity", "shield", "jetpack"], function($h, con
 		this.ay = $h.Vector(0, 400);
 		this.maxV = 400;
 		this.shieldHitSound = new Audio("audio/shield_hit.ogg");
-		this.shieldHitSound.volume = .5;
+		this.shieldHitSound.volume = .3;
 		this.gruntSound = new Audio("audio/grunt.ogg");
 		this.gruntSound.volume = .5;
 	}
@@ -255,10 +260,19 @@ define(["head-on", "constants", "entity", "shield", "jetpack"], function($h, con
 	}
 
 	function powerup(p){
-		if(p.type === "knockback"){
-			this.noKnockback = true;
-			this.powerups.push(p);
+		switch(p.type){
+			case "knockback":
+				this.noKnockback = true;
+				this.powerups.push(p);
+				break;
+			case "health":
+				this.setHealth(this.getHealth()+50);
+				break;
 		}
+		// if(p.type === "knockback"){
+		// 	this.noKnockback = true;
+		// 	this.powerups.push(p);
+		// }
 	}
 	
 	function renderPlayer(canvas){

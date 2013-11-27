@@ -126,6 +126,14 @@ define(["head-on", "player", "ship", "keys", "bullets", "buttons", "score"],func
 		{
 			name:"cannonSmoke3",
 			src:"img/cannon_smoke_3.png"
+		},
+		{
+			name:"healthPack",
+			src:"img/health_pack.png"
+		},
+		{
+			name:"knockback",
+			src:"img/knockback.png"
 		}
 		], false, function(){
 			player.init();

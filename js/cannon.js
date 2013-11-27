@@ -23,7 +23,7 @@ define(["head-on", "bullets", "entity"], function($h, bullets, entity){
 			loadTime:loadTime, 
 			sound: new Howl({
 				urls: ["audio/cannon.ogg"],
-				volume: .7,
+				volume: .3,
 				buffer:true,
 			})
 		}
