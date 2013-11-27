@@ -469,7 +469,12 @@ define(function(){
             },
             drawImage: function(image,x,y){
                 var ctx = this.canvas.ctx;
-                ctx.drawImage(image,x,y);
+                try{
+                	ctx.drawImage(image,x,y);	
+                }
+                catch(e){
+                	console.log(image);
+                }
                 return this;
             },
 
