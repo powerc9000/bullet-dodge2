@@ -56,7 +56,6 @@ define(["head-on"], function($h){
 					return;
 				}else{
 					this.announcement.fontSize = (baseFontSize+i) + "px";
-					console.log((iterations / (iterations - i)))
 					this.announcement.color = "rgba(0,0,0,"+((iterations - i) / iterations)+")";
 				}
 				i += 1;
@@ -73,7 +72,6 @@ define(["head-on"], function($h){
 			
 		});
 			if(this.announcement){
-				console.log("it is")
 				//textString, x, y, fontStyle, color, alignment, baseline
 				canvas.drawText(this.announcement.text, $h.map.width/2, 100, this.announcement.fontSize, this.announcement.color, "center");
 			}
