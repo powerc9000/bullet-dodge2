@@ -9,6 +9,7 @@ define(["head-on"], function($h){
 			lastTimeUp;
 		return{
 			useFuel:function(delta){
+				console.log(fuelPerSecond);
 				fuel -= fuelPerSecond * delta;
 				if(fuel < 0){
 					fuel = 0;

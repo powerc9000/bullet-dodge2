@@ -12,6 +12,7 @@ define(["head-on"], function($h){
 		});
 		window.addEventListener("keyup", function(e){
 			$h.keys[keys[e.which]] = false;
+			$h.events.trigger("keypress", e.which);
 			if(e.which === 80){
 				if($h.isPaused()){
 					$h.unpause();
