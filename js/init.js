@@ -134,6 +134,10 @@ define(["head-on", "player", "ship", "keys", "bullets", "buttons", "score"],func
 		{
 			name:"knockback",
 			src:"img/knockback.png"
+		},
+		{
+			name:"infiniteFuel",
+			src:"img/infinite_fuel.png"
 		}
 		], false, function(){
 			player.init();

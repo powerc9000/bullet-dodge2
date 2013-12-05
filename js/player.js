@@ -18,13 +18,16 @@ define(["head-on", "constants", "entity", "shield", "jetpack"], function($h, con
 			shield: shield,
 			powerup: powerup,
 			powerups: {
-				knockback:{}
+				knockback:{},
+				infiniteFuel:{}
 			},
 			removePowerup: removePowerup,
 			init: init,
 			setImage: setImage,
 			speedLimit: speedLimit,
-			updatePowerups: updatePowerups
+			updatePowerups: updatePowerups,
+			keys: keys,
+			turbo: turbo
 		}, entity);
 	return player;
 
@@ -59,6 +62,9 @@ define(["head-on", "constants", "entity", "shield", "jetpack"], function($h, con
 		
 		this.move(delta);
 		this.jetpack.update(delta);
+		if(this.jetpack.getFuel() <= 0){
+			this.turbo(false);
+		}
 		this.gravity(delta);
 		this.position = this.position.add(this.v.mul(delta));
 		this.setImage();
@@ -67,12 +73,19 @@ define(["head-on", "constants", "entity", "shield", "jetpack"], function($h, con
 		this.updatePowerups(delta);
 	}
 	function updatePowerups(delta){
-		if(this.powerups.knockback && this.powerups.knockback.active){
-			this.powerups.knockback.effectLength -= delta * 1000;
-			if(this.powerups.knockback.effectLength <= 0){
-				this.removePowerup(this.powerups.knockback);
+		var pUp;
+		for(key in this.powerups){
+			if(this.powerups.hasOwnProperty(key)){
+				pUp = this.powerups[key];
+				if(pUp.active){
+					pUp.effectLength -= delta * 1000;
+					if(pUp.effectLength <= 0){
+						this.removePowerup(pUp);
+					}
+				}
 			}
 		}
+		
 	}
 	function init(){
 		this.jetpack = jetpack(this);
@@ -96,20 +109,42 @@ define(["head-on", "constants", "entity", "shield", "jetpack"], function($h, con
 		this.shieldHitSound.volume = .3;
 		this.gruntSound = new Audio("audio/grunt.ogg");
 		this.gruntSound.volume = .5;
+		$h.events.listen("keypress", function(key){
+			this.keys(key);
+		}.bind(this))
 	}
 
+	function keys(key){
+		if(key === 82){
+			this.turbo();
+		}
+	}
+	function turbo(off){
+		if(this.turboActive || off){
+			this.turboActive = false;
+			!this.powerups.infiniteFuel.active && this.jetpack.setFuelPerSecond(7);
+			this.ax = $h.Vector(400,0);
+			this.ay = $h.Vector(0, 400);
+		}else{
+			this.turboActive = true;
+			!this.powerups.infiniteFuel.active && this.jetpack.setFuelPerSecond(50);
+			this.ay = $h.Vector(0,1000);
+			this.ax = $h.Vector(1000, 0);
+		}
+	}
 	function removePowerup(p, idx){
-		switch(p.type){
-			case "knockback":
-				this.powerups.knockback.active = false;
+		p.active = false;
+		if(p.type === "infiniteFuel"){
+			if(this.turboActive){
+				this.jetpack.setFuelPerSecond(50);
+			}else{
+				this.jetpack.setFuelPerSecond(7);
+			}
 		}
 	}
 	function speedLimit(){
-		if(this.v.x > this.maxV){
-			this.v.x = this.maxV;
-		}
-		if(this.v.y > this.maxV){
-			this.v.y = this.maxV;
+		if(this.v.length() > this.MaxV){
+			this.v = this.v.normalize.mul(this.MaxV);
 		}
 	}
 	function move(delta){
@@ -272,11 +307,14 @@ define(["head-on", "constants", "entity", "shield", "jetpack"], function($h, con
 			case "health":
 				this.setHealth(this.getHealth()+50);
 				break;
+			case "infiniteFuel":
+				this.jetpack.setFuelPerSecond(0);
+				this.jetpack.setFuel(this.jetpack.getFuel()+10);
+				p.active = true;
+				this.powerups.infiniteFuel = p;
+				break;
+
 		}
-		// if(p.type === "knockback"){
-		// 	this.noKnockback = true;
-		// 	this.powerups.push(p);
-		// }
 	}
 	
 	function renderPlayer(canvas){
