@@ -63,7 +63,7 @@ define(["head-on", "constants", "entity", "shield", "jetpack"], function($h, con
 		this.move(delta);
 		this.jetpack.update(delta);
 		if(this.jetpack.getFuel() <= 0){
-			this.turbo(false);
+			this.turbo(true);
 		}
 		this.gravity(delta);
 		this.position = this.position.add(this.v.mul(delta));
@@ -93,8 +93,8 @@ define(["head-on", "constants", "entity", "shield", "jetpack"], function($h, con
 		this.width = this.image.width;
 		this.height = this.image.height;
 		this.setHealth(this.getMaxHealth());
-		this.jetpack.setMaxFuel(300);
-		this.jetpack.setFuel(300);
+		this.jetpack.setMaxFuel(700);
+		this.jetpack.setFuel(700);
 		this.jetpack.setFuelPerSecond(7);
 		this.jetpack.setRefuelPerSecond(150);
 		this.shield.setMaxHealth(50);
@@ -104,7 +104,7 @@ define(["head-on", "constants", "entity", "shield", "jetpack"], function($h, con
 		this.angle = 0;
 		this.ax = $h.Vector(400,0);
 		this.ay = $h.Vector(0, 400);
-		this.maxV = 400;
+		this.maxV = 700;
 		this.shieldHitSound = new Audio("audio/shield_hit.ogg");
 		this.shieldHitSound.volume = .3;
 		this.gruntSound = new Audio("audio/grunt.ogg");
@@ -143,8 +143,8 @@ define(["head-on", "constants", "entity", "shield", "jetpack"], function($h, con
 		}
 	}
 	function speedLimit(){
-		if(this.v.length() > this.MaxV){
-			this.v = this.v.normalize.mul(this.MaxV);
+		if(this.v.length() > this.maxV){
+			this.v = this.v.normalize().mul(this.maxV);
 		}
 	}
 	function move(delta){
@@ -320,5 +320,8 @@ define(["head-on", "constants", "entity", "shield", "jetpack"], function($h, con
 	function renderPlayer(canvas){
 		var color;
 		canvas.drawImage(this.image, this.position.x, this.position.y);
+		if(this.turboActive){
+			canvas.drawText("TURBO!", 10,30, "20px", "red");
+		}
 	}
 });

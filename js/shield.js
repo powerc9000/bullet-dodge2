@@ -19,9 +19,8 @@ define(["head-on"], function($h){
 		rechargeTimeout: 3000,
 		update:update,
 		rechargeRate: 20,
-		lastHit: 0
+		lastHit: 0,
 	}
-
 	function setHealth(amt){
 		if(amt > maxHealth){
 			health = maxhealth;
@@ -36,8 +35,8 @@ define(["head-on"], function($h){
 	}
 
 	function setMaxHealth(amt){
-		maxHealth = amt;
 		health = amt * (health/maxHealth);
+		maxHealth = amt;
 	}
 
 	function getMaxHealth(){
@@ -63,7 +62,7 @@ define(["head-on"], function($h){
 
 	function update(delta){
 		if(Date.now() - this.lastHit > this.rechargeTimeout){
-			if(health !== maxHealth){
+			if(health < maxHealth){
 				if(rechargeSound.paused){
 					if(!continueFromPaused){
 						rechargeSound.currentTime = 0;
@@ -80,6 +79,9 @@ define(["head-on"], function($h){
 			}else{
 				rechargeSound.pause();
 			}
+		}
+		if(maxHealth < 200){
+			this.setMaxHealth(maxHealth + delta/10);
 		}
 	}
 });

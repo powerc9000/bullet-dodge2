@@ -18,7 +18,7 @@ define(["head-on"], function($h, ba){
 				if(Math.abs(angleDelta) > Math.PI){
 					angleDelta = angleDelta - sign(angleDelta)*Math.PI*2;
 				}
-				this.angle += angleDelta * .035;
+				this.angle += angleDelta * .045;
 				this.position.x += this.speed * delta * Math.cos(this.angle);
 				this.position.y += this.speed * delta * Math.sin(this.angle);
 			}
@@ -41,7 +41,7 @@ define(["head-on"], function($h, ba){
 	}
 	function init(position){
 		var that = this;
-		this.speed = 400;
+		this.speed = 700;
 		this.position = position || $h.Vector($h.map.width +100, $h.map.height /2);
 		this.heading = $h.player.position.sub(this.position).normalize();
 		this.v = this.heading.mul(400);
@@ -49,7 +49,7 @@ define(["head-on"], function($h, ba){
 		this.image = $h.images("seekerBullet");
 		this.width = this.image.width;
 		this.height = this.image.height;
-		this.TTL = 5 * 1000;
+		this.TTL = 7 * 1000;
 		this.created = Date.now();
 	}
 	
