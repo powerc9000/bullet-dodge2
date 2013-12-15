@@ -7,7 +7,7 @@ define(["head-on", "player", "ship", "keys", "bullets", "buttons", "score"],func
 	});
 	return function(width, height){
 		$h.canvas.create("main", width, height);
-		$h.canvas.create("hud", width, 200);
+		$h.canvas.create("hud", width, 150);
 		$h.canvas.create("background", width, height);
 		
 		$h.map = {};

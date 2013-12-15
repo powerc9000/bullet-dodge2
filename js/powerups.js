@@ -80,13 +80,13 @@ define(["head-on"], function($h){
 	function spawnPowerup(){
 		var rand = $h.randInt(0,100);
 		//10% chance
-		// if(rand <= 33){
-		// 	this.powerups.push(this.powerup("knockback"));
-		// }else if( rand <= 66){
-		// 	this.powerups.push(this.powerup("health"));
-		// }else{
+		if(rand <= 33){
+			this.powerups.push(this.powerup("knockback"));
+		}else if( rand <= 66 && $h.player.getHealth() < $h.player.getMaxHealth() - 10){
+			this.powerups.push(this.powerup("health"));
+		}else{
 			this.powerups.push(this.powerup("infiniteFuel"))
-		//}
+		}
 	}
 
 	function powerup(type){
@@ -107,14 +107,14 @@ define(["head-on"], function($h){
 			case "health":
 				base.TTL = 12000;
 				base.color = "green";
-				base.description = "50 Health!";
+				base.description = "50 Health";
 				base.image = $h.images("healthPack");
 				break;
 			case "infiniteFuel":
 				base.TTL = 12000;
 				base.color = "purple";
 				base.effectLength = 10000;
-				base.description = "Unlimted Fuel!";
+				base.description = "Unlimted Fuel";
 				base.image = $h.images("infiniteFuel");
 		}
 

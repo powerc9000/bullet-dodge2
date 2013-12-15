@@ -2,15 +2,48 @@
 	<head>
 		<title>Bullet Dodge 2</title>
 		<style>
-			#game-contain{
+			body{
+				background:#3D3D3D;
+				color:white;
+				font-family:"sans-serif";
+			}
+			.container{
 				width:1200px;
 				margin:auto;
+			}
+			#game-contain{
+				border:3px black solid;
+			}
+			.loading{
+				font-family:"sans-serif";
+				color:white;
+			}
+			h1.header{
+				color:white;
+				font-family:"sans-serif";
 			}
 		</style>
 	</head>
 	<body>
-		<div id="game-contain">
+		<div class="container">
+			<h1 class="header">Bullet Dodge 2</h1>
+		</div>	
+		<div id="game-contain" class="container">
 			<p class="loading">Loading Please Wait</p>
+		</div>
+		<div class="container">
+			<h2>Controls</h2>
+			<ul>
+				<li>W: Up</li>
+				<li>A: Left</li>
+				<li>S: Down</li>
+				<li>D: Right</li>
+				<li>R: Turbo mode</li>
+			</ul>
+			<h2>Tips</h2>
+			<p>Watch your fuel carefully!</p>
+			<p>Turbo mode to get away from seeker missiles</p>
+
 		</div>
 	</body>
 	<script src="http://cdnjs.cloudflare.com/ajax/libs/q.js/0.9.2/q.js"></script>
