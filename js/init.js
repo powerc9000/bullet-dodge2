@@ -6,6 +6,8 @@ define(["head-on", "player", "ship", "keys", "bullets", "buttons", "score"],func
 			
 	});
 	return function(width, height){
+		$h.globalTimer = new $h.Timer();
+		console.log($h.globalTimer);
 		$h.canvas.create("main", width, height);
 		$h.canvas.create("hud", width, 150);
 		$h.canvas.create("background", width, height);
