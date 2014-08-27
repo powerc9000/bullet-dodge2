@@ -37,6 +37,11 @@ define(["head-on", "constants"], function($h, c){
 		this.sound.volume = .3;
 		this.explodeSound.volume = .2;
 		this.sound.play();
+		this.destroyed = false;
+		this.exploding = false;
+		this.playerHit = false;
+		this.TTL = 5*1000;
+		this.iteration = 0;
 	}
 
 	function destroy(reason, obj){
@@ -49,7 +54,7 @@ define(["head-on", "constants"], function($h, c){
 			this.explode();
 		}
 		if(reason === "exploded"){
-			this.destroyed = "true";
+			this.destroyed = true;
 		}
 	}
 

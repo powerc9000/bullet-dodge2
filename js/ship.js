@@ -52,10 +52,10 @@ define(["head-on", "entity", "cannon"], function($h, entity, cannon){
 				if(rando < .05){
 					c.load("seeker");
 				}else if(rando <= .1 && rando >= .05){
-					c.load("bigBoy");
+					c.load("seeker");
 				}
 				else{
-					c.load("normal");
+					c.load("seeker");
 				}
 			}
 			

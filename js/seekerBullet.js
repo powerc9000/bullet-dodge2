@@ -51,6 +51,8 @@ define(["head-on"], function($h, ba){
 		this.height = this.image.height;
 		this.TTL = 7 * 1000;
 		this.created = Date.now();
+		this.destroyed = false;
+		this.exploding = false;
 	}
 	
 
