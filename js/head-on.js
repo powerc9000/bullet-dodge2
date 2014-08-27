@@ -406,6 +406,9 @@ define(function(){
 				}
 				ctx.restore();
 			},
+			clear: function(){
+				this.canvas.ctx.clearRect(0,0, this.width, this.height)
+			},
 			drawRect: function(width, height, x, y, color, stroke, rotation){
 				var ctx = this.canvas.ctx, mod = 1;
 				ctx.save();

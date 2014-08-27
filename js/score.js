@@ -19,7 +19,7 @@ define(["head-on", "bullets"], function($h, bullets){
 			}.bind(this))
 		},
 		render: function(canvas){
-			canvas.drawText("Score: "+Math.round(this.score), $h.map.width/2, 20, "20px", "black", "center");
+			canvas.drawText("Score: "+Math.round(this.score), 90, 30, "20px", "black", "center");
 		},
 		reset: function(){
 			this.score = 0;
