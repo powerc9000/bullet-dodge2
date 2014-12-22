@@ -4,6 +4,7 @@ define(["head-on"], function($h){
 	var maxHealth = 50;
 	var rechargeSound = new Audio("audio/shield_recharge.ogg");
 	var continueFromPaused = false;
+	var recharge;
 	rechargeSound.volume = .2;
 	$h.events.listen("pause", function(){
 		rechargeSound.pause();
@@ -55,13 +56,16 @@ define(["head-on"], function($h){
 			health -= dmg;
 			playerDmg =  0;
 		}
-		this.lastHit = Date.now();
+		recharge.reset();
 		rechargeSound.pause();
 		return playerDmg;
 	}
 
 	function update(delta){
-		if(Date.now() - this.lastHit > this.rechargeTimeout){
+		if(!recharge){
+			recharge = $h.globalTimer.job(3000, -1);
+		}
+		if(recharge.ready()){
 			if(health < maxHealth){
 				if(rechargeSound.paused){
 					if(!continueFromPaused){

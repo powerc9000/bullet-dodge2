@@ -49,8 +49,15 @@ define(["head-on", "entity", "cannon"], function($h, entity, cannon){
 			var rando = Math.random();
 			c.update(delta);
 			if(!c.loading && !c.loaded){
+				if(this.aupair){
+					c.load("seeker");
+					this.aupair = false;
+					return;
+				}
 				if(rando < .05){
 					c.load("seeker");
+					this.aupair = true;
+
 				}else if(rando <= .1 && rando >= .05){
 					c.load("bigBoy");
 				}

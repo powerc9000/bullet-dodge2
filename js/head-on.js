@@ -53,6 +53,7 @@ define(function(){
 						
 					}
 				},
+
 				animate: function(object,keyFrames,callback){
 					var that, interval, currentFrame = 0;
 					if(!object.animating){
@@ -98,31 +99,6 @@ define(function(){
 					return o;
 				},
 
-				// collides: function(ob1,ob2){
-				//  var x1, x2, y1, y2, w1, w2, h1, h2;
-				//  x1 = ob1.x;
-				//  x2 = ob2.x;
-				//  y1 = ob1.y;
-				//  y2 = ob2.y;
-				//  w1 = ob1.width;
-				//  w2 = ob2.width;
-				//  h1 = ob1.height;
-				//  h2 = ob2.height;
-				//  w1 += x1;
-				//  w2 += x2;
-
-				//  if(w2 < x1 || w1 < x2){
-				//	return false;
-				//  }
-
-				//  h1 += y1;
-				//  h2 += y2;
-
-				//  if(h2 < y1 || h1 < y2){
-				//	return false;
-				//  }
-				//  return true;
-				// },
 				collides: function(poly1, poly2) {
 					var points1 = this.getPoints(poly1),
 						points2 = this.getPoints(poly2),
@@ -290,7 +266,9 @@ define(function(){
 
 				},
 
-				
+				Timer: function(){
+					this.jobs = [];
+				},
 				pause: function(){
 					this.paused = true;
 					this.events.trigger("pause");
@@ -428,6 +406,9 @@ define(function(){
 				}
 				ctx.restore();
 			},
+			clear: function(){
+				this.canvas.ctx.clearRect(0,0, this.width, this.height)
+			},
 			drawRect: function(width, height, x, y, color, stroke, rotation){
 				var ctx = this.canvas.ctx, mod = 1;
 				ctx.save();
@@ -521,6 +502,32 @@ define(function(){
 					document.body.appendChild(this.canvas.canvas);
 				}
 				return this;
+			}
+		}
+		headOn.Timer.prototype = {
+			job: function(time, start){
+				console.log(start);
+				var jiff = {
+					TTL: time,
+					remaining: start || time
+				};
+				this.jobs.push(jiff);
+				return {
+					ready: function(){
+						return jiff.remaining <= 0;
+					},
+					reset: function(){
+						jiff.remaining = jiff.TTL;
+					},
+					timeLeft: function(){
+						return jiff.remaining;
+					}
+				}
+			},
+			update: function(time){
+				this.jobs.forEach(function(j){
+					j.remaining -= time;
+				});
 			}
 		}
 		vectorProto = {

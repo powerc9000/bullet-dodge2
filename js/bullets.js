@@ -1,6 +1,7 @@
 define(["head-on", "seekerBullet", "big-boyBullet", "normalBullet", "entity"], function($h, sb, bb, nb, entity){
 	var ag = arguments,
 		bullets = [],
+		pool = {seeker:[], bigBoy:[], normal:[]},
 		cos = Math.cos,
 		sin = Math.sin,
 		count = 0,
@@ -38,6 +39,8 @@ define(["head-on", "seekerBullet", "big-boyBullet", "normalBullet", "entity"], f
 		bullets.forEach(function(b,i){
 			if(b.destroyed){
 				bullets.splice(i,1);
+				pool[b.type].push(b);
+
 				$h.events.trigger("bulletDestroyed");
 			}
 			b.update(delta);
@@ -54,10 +57,16 @@ define(["head-on", "seekerBullet", "big-boyBullet", "normalBullet", "entity"], f
 	function createBullets(amt, type, position){
 		var b;
 		for(var i=0; i<amt; i++){
-			b = $h.entity(types[type], bulletProto);
-			b.super = bulletProto;
-			b.init(position);
+			b = getFromPool(type);
+			if(!b){
+				b = $h.entity(types[type], bulletProto);
+				b.super = bulletProto;
+			}
 
+			b.init(position);
+			
+			
+			//pool[type].push(b);
 			bullets.push(b);
 			count++;
 		}
@@ -66,6 +75,12 @@ define(["head-on", "seekerBullet", "big-boyBullet", "normalBullet", "entity"], f
 		bullets.forEach(function(b){
 			b.render(canvas);
 		})
+	}
+	function getFromPool(type){
+		var b = pool[type].pop();
+
+		return b || null;
+
 	}
 	function explodeBullet(){
 

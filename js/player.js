@@ -43,6 +43,9 @@ define(["head-on", "constants", "entity", "shield", "jetpack"], function($h, con
 		else{
 			health = h;
 		}
+		if(health < 0){
+			health = 0;
+		}
 	}
 
 	function getMaxHealth(){
@@ -71,6 +74,8 @@ define(["head-on", "constants", "entity", "shield", "jetpack"], function($h, con
 		this.calcMidPoint();
 		this.shield.update(delta);
 		this.updatePowerups(delta);
+
+
 	}
 	function updatePowerups(delta){
 		var pUp;
@@ -275,6 +280,9 @@ define(["head-on", "constants", "entity", "shield", "jetpack"], function($h, con
 		if(bullet.type === "bigBoy"){
 			health -= this.shield.damage(50);
 			knockback = 500;
+		}
+		if(health <0){
+			health = 0;
 		}
 		if(!this.powerups.knockback.active){
 			this.v = angle.mul(knockback);

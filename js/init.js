@@ -6,8 +6,10 @@ define(["head-on", "player", "ship", "keys", "bullets", "buttons", "score"],func
 			
 	});
 	return function(width, height){
+		$h.globalTimer = new $h.Timer();
+		console.log($h.globalTimer);
 		$h.canvas.create("main", width, height);
-		$h.canvas.create("hud", width, 150);
+		$h.canvas.create("hud", width, height);
 		$h.canvas.create("background", width, height);
 		
 		$h.map = {};
@@ -19,6 +21,8 @@ define(["head-on", "player", "ship", "keys", "bullets", "buttons", "score"],func
 		$h.canvas("main").append("#game-contain");
 		$h.canvas("hud").append("#game-contain");
 		$h.score = score;
+		$h.canvas("hud").canvas.canvas.style.position = "absolute";
+		$h.canvas("hud").canvas.canvas.style.top = 0;
 		// $h.canvas("background").append("body");
 		// $h.canvas("background").cavanas.style.position ="aboslute";
 		buttons();
@@ -145,7 +149,7 @@ define(["head-on", "player", "ship", "keys", "bullets", "buttons", "score"],func
 			score.init();
 			document.querySelectorAll(".loading")[0].style.display = "none";
 		});
-		keys($h.canvas("main").canvas.canvas);
+		keys($h.canvas("hud").canvas.canvas);
 		return{
 			canvas: $h.canvas("main"),
 			hud: $h.canvas("hud"),

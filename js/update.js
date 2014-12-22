@@ -12,6 +12,7 @@ define(["hud", "powerups"], function(hud, powerups){
 				this.ship.update(delta)
 				hud.update();
 				this.score.update(delta);
+				this.globalTimer.update(delta* 1000);
 			}
 		}
 		else{

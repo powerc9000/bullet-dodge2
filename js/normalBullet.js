@@ -38,6 +38,8 @@ define(["head-on", "constants"], function($h, constants){
 		this.v = this.heading.mul(totalV);
 		this.image = $h.images("normalBullet")
 		this.explodeSound= new Audio("")
+		this.destroyed = false;
+		this.exploding = false;
 	}
 	function destroy(reason, entity){
 		if(reason === "collide"){
